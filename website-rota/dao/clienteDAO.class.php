@@ -70,6 +70,7 @@ class ClienteDAO{
      try{
 
        $statement = $this->conexao->query("select * from clientes order by nome;");
+       $statement = $this->conexao->query("select * from clientes where id != 1;");
        $array = $statement->fetchAll(PDO::FETCH_CLASS,"Cliente");
        return $array;
 
@@ -78,18 +79,10 @@ class ClienteDAO{
      }
    }
 
-   public function buscarDadosDoCliente(){
+   public function consultar_cpf($cpf){
 
-     try{
-
-       $statement = $this->conexao->query("select * from clientes where cpf = '777.777.777-77';");
-       $array = $statement->fetchAll(PDO::FETCH_CLASS,"Cliente");
-       return $array;
-
-     }catch(PDOException $e){
-       echo "Erro ao buscar Cliente! ".$e;
-     }
-   }  
+           return $statement = $this->conexao->prepare('select * from clientes where id = :c',array(':c'=>$cpf));
+       }
 
    public function deletarCliente($cpf){
      try{
@@ -110,19 +103,19 @@ class ClienteDAO{
           global $pdo;
 
     		//verifica se o email e senha estão cadastrados.
-    		$sql = $pdo->prepare("select id from clientes where cpf = :c and senha = :s");
+    		$statement = $pdo->prepare("select id from clientes where cpf = :c and senha = :s");
 
-    		$sql->bindValue(":c", $cpf);
-    		$sql->bindValue(":s", md5($senha));
-    		$sql->execute();
+    		$statement->bindValue(":c", $cpf);
+    		$statement->bindValue(":s", md5($senha));
+    		$statement->execute();
 
-    		if($sql->rowCount() > 0){
+    		if($statement->rowCount() > 0){
 
     			//sessão para entrar no sistema.
 
     			//transformando os dados vindo do banco de dados em um array.
 
-    			$dado = $sql->fetch();
+    			$dado = $statement->fetch();
 
     			//criando uma sessão.
     			session_start();

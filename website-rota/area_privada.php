@@ -7,7 +7,7 @@ include_once  'model/cliente.class.php';
 include_once 'excluir.php';
 
 $cliDAO = new ClienteDAO();
-$array = $cliDAO->buscarDadosDoCliente();
+$array = $cliDAO->consultar_cpf($cpf);
 
    if(!isset($_SESSION['id'])){
 
@@ -35,7 +35,7 @@ $array = $cliDAO->buscarDadosDoCliente();
 <body class="animated fadeIn">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
     <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <img src="img/menu.svg">
@@ -58,7 +58,7 @@ $array = $cliDAO->buscarDadosDoCliente();
         </li>
       </ul>
     </div>
-  </nav>
+  </nav> -->
 
   <?php
       if(isset($array)){
