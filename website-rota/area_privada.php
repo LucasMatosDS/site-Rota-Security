@@ -7,7 +7,7 @@ include_once  'model/cliente.class.php';
 include_once 'excluir.php';
 
 $cliDAO = new ClienteDAO();
-$array = $cliDAO->consultar_cpf($cpf);
+$array = $cliDAO->consultar_cpf();
 
    if(!isset($_SESSION['id'])){
 
@@ -107,15 +107,22 @@ $array = $cliDAO->consultar_cpf($cpf);
   <script>
 
     function verificarExclusao(cpf){
+        var bol = true;
         var decisao = confirm('Desejá Excluir o Registro ?');
+
+         if(bol == true){
           if(decisao == true){
+            bol = false;
                 alert('Registro excluido com sucesso!');
                 window.location.href = "excluir.php?cpf=" + cpf;
-
+                return true;
           }else{
+             if(bol == false){
               alert('erro ao excluir Registro!');
-              return;
-          }
+              return false;
+              }
+           }
+        }
     }
 </script>
 

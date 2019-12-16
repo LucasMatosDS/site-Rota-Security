@@ -1,9 +1,7 @@
 <?php
-   if(isset($_GET['cpf'])){
+         include_once 'dao/clienteDAO.class.php';
          $cliDAO = new ClienteDAO();
-         $cliDAO->deletarCliente($_GET['cpf']);
+         $cliDAO->deletarTodosOsRegistros();
          $cliDAO->reiniciarId();
          header('location: dados.php');
-   }
-
  ?>

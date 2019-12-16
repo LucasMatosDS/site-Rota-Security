@@ -10,7 +10,7 @@ $cliDAO = new ClienteDAO();
 $array = $cliDAO->buscarCliente();
 
    if(!isset($_SESSION['id'])){
-   
+
       header("location: area_cliente.php");
       exit;
    }
@@ -73,7 +73,8 @@ $array = $cliDAO->buscarCliente();
     }
    ?>
    <div class="container col-md-10" style="top: 100px;">
-       <button type="button" href="sair.php" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';">sair</button>
+       <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';"><img src='img/exit.png' class="mr-1">sair</button>
+       <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="return verificarExclusaoDeRegistros()"><img src='img/trash-all.png' class="mr-1">Excluir Registros</button>
   <div class="table-responsive-md">
       <table class="table table-dark table-bordered table-hover table-condensed">
         <thead align="center">
@@ -89,8 +90,8 @@ $array = $cliDAO->buscarCliente();
       <?php
           foreach($array as $cli){
             echo "<tr>";
-              echo "<td><a href='dados.php' class='btn btn-warning border border-light text-dark'>Baixar</a>
-              <a href='dados.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='verificarExclusao()'>Excluir</a></td>
+              echo "<td><a href='dados.php' class='btn btn-warning border border-light text-dark'><img src='img/download.png' title='Baixar Arquivo'></a>
+              <a href='dados.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></td>
               ";
               echo "<td>$cli->nome</td>";
               echo "<td>$cli->email</td>";
@@ -106,17 +107,33 @@ $array = $cliDAO->buscarCliente();
 </div>
   <script>
 
-    function verificarExclusao(cpf){
+    function verificarExclusaoPeloCPF(cpf){
+
         var decisao = confirm('Desejá Excluir o Registro ?');
+
           if(decisao == true){
                 alert('Registro excluido com sucesso!');
                 window.location.href = "excluir.php?cpf=" + cpf;
+                return true;
 
-          }else{
-              alert('erro ao excluir Registro!');
-              return;
-          }
+              }else{
+                  return false;
+              }
     }
+
+   function verificarExclusaoDeRegistros(){
+
+      var decisao1 = confirm('Desejá Excluir todos os Registros ?');
+
+     if(decisao1 == true){
+         alert('Registros excluidos com sucesso!');
+         window.location.href = "excluir-registros.php";
+         return true;
+
+      }else{
+         return false;
+      }
+   }
 </script>
 
   <script src="js/jquery.slim.min.js"></script>

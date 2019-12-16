@@ -23,7 +23,7 @@ class ClienteDAO{
    		$pdo = new PDO("mysql:dbname=".$n.";host=".$h,$u,$s);
 
    	 }catch(PDOException $e){
-   	echo "ERRO: erro ao conectar a Base de Dados!";
+   	echo "Erro: erro ao conectar a Base de Dados!";
    	 }
    	}
 
@@ -69,8 +69,8 @@ class ClienteDAO{
 
      try{
 
-       $statement = $this->conexao->query("select * from clientes order by nome;");
-       $statement = $this->conexao->query("select * from clientes where id != 1;");
+       $statement = $this->conexao->query("select * from clientes;");
+       $statement = $this->conexao->query("select * from clientes where id != 1 order by nome;");
        $array = $statement->fetchAll(PDO::FETCH_CLASS,"Cliente");
        return $array;
 
@@ -79,12 +79,24 @@ class ClienteDAO{
      }
    }
 
-   public function consultar_cpf($cpf){
+   public function consultar_cpf(){
 
-           return $statement = $this->conexao->prepare('select * from clientes where id = :c',array(':c'=>$cpf));
+        try{
+          $cpf = "222.222.222-22";
+
+           $statement = $this->conexao->prepare("select * from clientes where cpf = :c");
+           $statement->execute(array(':c' => $cpf));
+           $array = $statement->fetchAll();
+
+           return $array;
+
+         }catch(PDOException $e){
+             echo "Erro ao buscar registros!".$e;
+         }
        }
 
    public function deletarCliente($cpf){
+
      try{
 
        $statement = $this->conexao->prepare(
@@ -97,6 +109,31 @@ class ClienteDAO{
        echo "Erro ao excluir cliente! ".$e;
   }
 }
+
+public function deletarTodosOsRegistros(){
+
+     try{
+
+         $statement = $this->conexao->prepare("delete from clientes where id != 1;");         
+         $statement->execute();
+
+     }catch(PDOException $e){
+       echo "Erro ao excluir os Registros!";
+     }
+}
+
+  public function reiniciarId(){
+
+        try{
+
+          $statement = $this->conexao->prepare(
+            "alter table clientes auto_increment = 2;");
+            $statement->execute();
+
+        }catch(PDOException $e){
+           echo "Erro ao resetar chave do registro!".$e;
+        }
+  }
 
     public function logar($cpf, $senha){
 
