@@ -73,8 +73,12 @@ $array = $cliDAO->buscarCliente();
     }
    ?>
    <div class="container col-md-10" style="top: 100px;">
+   <fieldset class="fieldset-border">
+     <legend class="legend-border">Controles</legend>
        <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';"><img src='img/exit.png' class="mr-1">sair</button>
        <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="return verificarExclusaoDeRegistros()"><img src='img/trash-all.png' class="mr-1">Excluir Registros</button>
+       <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = 'backup.php';"><img src='img/backup.png' class="mr-1">Realizar Backup</button>
+     </fieldset>
   <div class="table-responsive-md">
       <table class="table table-dark table-bordered table-hover table-condensed">
         <thead align="center">

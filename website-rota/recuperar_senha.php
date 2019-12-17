@@ -54,7 +54,7 @@
           </li>
           <hr>
         </div>
-     <form method="POST" action="./recuperar_senha.php" name="recuperarDados" onsubmit="recuperarSenha()">
+     <form method="POST" action="recuperar_senha.php" name="recuperarDados" onsubmit="recuperarSenha()">
        <div class="form-group col-md-8">
           <label>E-mail:</label>
           <input type="email" class="form-control" name="emailC" autocomplete="off" placeholder="Informe seu E-mail" />

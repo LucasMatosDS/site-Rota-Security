@@ -29,10 +29,7 @@ class ClienteDAO{
 
   public function cadastrarCliente($cli){
 
-      try {
-
-        //armazenando a senha em uma varivél e criptografada.
-        //$senha_md5 = md5($cli->senha);
+      try {        
 
           $statement = $this->conexao->prepare("select id from clientes where cpf = :c");
 
@@ -114,7 +111,7 @@ public function deletarTodosOsRegistros(){
 
      try{
 
-         $statement = $this->conexao->prepare("delete from clientes where id != 1;");         
+         $statement = $this->conexao->prepare("delete from clientes where id != 1;");
          $statement->execute();
 
      }catch(PDOException $e){
@@ -127,12 +124,25 @@ public function deletarTodosOsRegistros(){
         try{
 
           $statement = $this->conexao->prepare(
-            "alter table clientes auto_increment = 2;");
+            "alter table clientes auto_increment = 1;");
             $statement->execute();
 
         }catch(PDOException $e){
            echo "Erro ao resetar chave do registro!".$e;
         }
+  }
+
+  public function backup(){
+
+      try{
+
+        $statement = $this->conexao->prepare('');
+        $statement->execute();
+
+      }catch(PDOException $e){
+          echo "Erro ao executar Backup!".$e;
+      }
+
   }
 
     public function logar($cpf, $senha){

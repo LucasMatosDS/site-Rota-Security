@@ -55,7 +55,7 @@ ob_start();
           </li>
           <hr>
         </div>
-     <form method="POST" action="./cadastro.php" name="dadosCadastro" onsubmit="validarCadastro()">
+     <form method="POST" action="cadastro.php" name="dadosCadastro" onsubmit="validarCadastro()">
        <div class="form-group col-md-8">
           <label>Nome Completo:</label>
           <input type="text" class="form-control" name="nome" autocomplete="off" placeholder="Informe seu Nome" required="true"/>
@@ -118,7 +118,7 @@ ob_start();
 
           $cli->__destruct();
 
-          header("location:cadastro.php");
+          header("location: cadastro.php");
    }
  }
 

@@ -63,8 +63,8 @@
           <div class="form-group col-md-8">
             <label>Senha:</label>
             <input type="password" class="form-control mb-2" name="senha" maxlength="8" autocomplete="off" placeholder="Informe a Senha"/>
-            <li><a id="cad" href="./cadastro.php">cadastre-se</a></li>
-            <li><a id="rsenha" href="./recuperar_senha.php">esqueceu a senha?</a></li>
+            <li><a id="cad" href="cadastro.php">cadastre-se</a></li>
+            <li><a id="rsenha" href="recuperar_senha.php">esqueceu a senha?</a></li>
           </div>
         <button id="btn-enviar" type="submit" name="entrar" class="btn mr-2 button-form ml-3">Entrar</button>
         <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2 button-form">
@@ -86,7 +86,6 @@
                         header("location: dados.php");
 
                 }else{
-
                       header("location: area_privada.php");
                     }
 
