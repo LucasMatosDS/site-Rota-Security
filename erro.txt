@@ -33,7 +33,7 @@ $array = $cliDAO->consultar_cpf();
 
         try{
 
-           $statement = $this->conexao->prepare("select * from clientes where cpf = '777.777.777-77' and senha = 77777777");
+           $statement = $this->conexao->prepare("select * from clientes where cpf = :c");
            $statement->execute(array(':c' => $cpf));
            $array = $statement->fetchAll();
 
