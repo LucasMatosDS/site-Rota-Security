@@ -55,7 +55,7 @@
           </li>
           <hr>
         </div>
-     <form method="POST" name="dadosLogin" onsubmit="validarLogin()">
+     <form name="dadosLogin" method="POST" onsubmit="validarLogin()">
        <div class="form-group col-md-8">
            <label>CPF:</label>
            <input id="cpf" type="text" class="form-control mb-1" name="cpf" autocomplete="off" placeholder="Informe o CPF"/>
@@ -82,11 +82,14 @@
 
       				if($cliDAO->logar($cpf,$senha)){
 
-                if($cpf == '000.000.000-00' && $senha == '00000000'){
-                        header("location: dados.php");
+                if($cpf == '000.000.000-00' && $senha == '00000000' || $cpf == '111.111.111-11' && $senha == '11111111'){
+
+                      header("location: dados.php");
 
                 }else{
-                      header("location: area_privada.php");
+
+                  header("location: area_privada.php");
+
                     }
 
       			}else{

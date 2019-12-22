@@ -7,8 +7,10 @@ include_once  'model/cliente.class.php';
 include_once 'excluir.php';
 
 $cliDAO = new ClienteDAO();
-$array = $cliDAO->consultar_cpf();
-
+$array = $cliDAO->buscarCliente();
+//var_dump($_cpf);
+//$array = $cliDAO->consultar_cpf($cpf);
+// var_dump($cpf);
    if(!isset($_SESSION['id'])){
 
       header("location: area_cliente.php");
@@ -73,9 +75,12 @@ $array = $cliDAO->consultar_cpf();
     }
    ?>
    <div class="container col-md-10" style="top: 100px;">
-       <button type="button" href="sair.php" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';">sair</button>
+     <button type="button" href="sair.php" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';">sair</button>
+    <form action="" method="POST" id="form-pesquisa">
+     <input type="text" name="pesquisa" id="pesquisa" class="form-control" placeholder="Informe seu CPF para Pesquisa">
+    </form>
   <div class="table-responsive-md">
-      <table class="table table-dark table-bordered table-hover table-condensed">
+    <table class="table table-dark table-bordered table-hover table-condensed">
         <thead align="center">
     <tr>
       <th>Ações</th>
@@ -85,27 +90,29 @@ $array = $cliDAO->consultar_cpf();
       <th scope="col">Senha</th>
     </tr>
   </thead>
-  <tbody>
-      <?php
-          foreach($array as $cli){
-            echo "<tr>";
-              echo "<td><a href='dados.php' class='btn btn-warning border border-light text-dark'>Baixar</a>
-              <a href='dados.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='verificarExclusao()'>Excluir</a></td>
-              ";
-              echo "<td>$cli->nome</td>";
-              echo "<td>$cli->email</td>";
-              echo "<td>$cli->cpf</td>";
-              echo "<td>$cli->senha</td>";
-            echo "</tr>";
-          }
-        }
-       ?>
+  <tbody class="resultado">
+    <?php
+
+
+         //foreach($array as $cli){
+        //   echo "<tr class='resultado'>";
+               // echo "<td><a href='dados.php' class='btn btn-warning border border-light text-dark'><img src='img/download.png' title='Baixar Arquivo'></a>
+               // <a href='dados.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></td>
+               // ";
+        //     // echo "<td>$cli->nome</td>";
+        //     // echo "<td>$cli->email</td>";
+        //     // echo "<td>$cli->cpf</td>";
+        //     // echo "<td>$cli->senha</td>";
+        //   echo "</tr>";
+        //}
+       //}
+      }
+     // ?>
    </tbody>
   </table>
  </div>
 </div>
   <script>
-
     function verificarExclusao(cpf){
         var bol = true;
         var decisao = confirm('Desejá Excluir o Registro ?');
@@ -129,6 +136,7 @@ $array = $cliDAO->consultar_cpf();
   <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/refresh.js"></script>
   <script src="js/jquery.mask.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>

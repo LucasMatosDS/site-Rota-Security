@@ -29,7 +29,7 @@ class ClienteDAO{
 
   public function cadastrarCliente($cli){
 
-      try {        
+      try {
 
           $statement = $this->conexao->prepare("select id from clientes where cpf = :c");
 
@@ -67,7 +67,7 @@ class ClienteDAO{
      try{
 
        $statement = $this->conexao->query("select * from clientes;");
-       $statement = $this->conexao->query("select * from clientes where id != 1 order by nome;");
+       $statement = $this->conexao->query("select * from clientes where id != 1 and id != 2 order by nome;");
        $array = $statement->fetchAll(PDO::FETCH_CLASS,"Cliente");
        return $array;
 
@@ -76,10 +76,42 @@ class ClienteDAO{
      }
    }
 
-   public function consultar_cpf(){
+   public function buscarUsuarioAdm(){
 
         try{
-          $cpf = "222.222.222-22";
+
+          $result = $statement = $this->conexao->query("select nome from clientes where id = 1");
+
+          if($result == 1){
+
+          $result = $statement->fetchAll(PDO::FETCH_CLASS, "Cliente");
+          return $result;
+
+        }
+
+        }catch(PDOException $e){
+            echo "Erro ao buscar usuário!".$e;
+        }
+   }
+
+   public function buscarUsuarioTec(){
+
+        try{
+
+          $result = $statement = $this->conexao->query("select nome from clientes where id < 3 and id > 1");
+          $result = $statement->fetchAll(PDO::FETCH_CLASS, "Cliente");
+          return $result;
+
+        }catch(PDOException $e){
+            echo "Erro ao buscar usuário!".$e;
+        }
+   }
+
+   public function consultar_cpf($cpf){
+
+        try{
+
+          echo $_SERVER['REQUEST_METHOD'];
 
            $statement = $this->conexao->prepare("select * from clientes where cpf = :c");
            $statement->execute(array(':c' => $cpf));
@@ -111,7 +143,7 @@ public function deletarTodosOsRegistros(){
 
      try{
 
-         $statement = $this->conexao->prepare("delete from clientes where id != 1;");
+         $statement = $this->conexao->prepare("delete from clientes where id != 1 and id != 2;");
          $statement->execute();
 
      }catch(PDOException $e){
@@ -124,8 +156,8 @@ public function deletarTodosOsRegistros(){
         try{
 
           $statement = $this->conexao->prepare(
-            "alter table clientes auto_increment = 1;");
-            $statement->execute();
+           "alter table clientes auto_increment = 1;");
+          $statement->execute();
 
         }catch(PDOException $e){
            echo "Erro ao resetar chave do registro!".$e;

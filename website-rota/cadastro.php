@@ -114,7 +114,7 @@ ob_start();
           }else{
 
           $cliDAO = new ClienteDAO();
-          $cliDAO->cadastrarCliente($cli);
+          $cliDAO->cadastrarCliente($cli);          
 
           $cli->__destruct();
 

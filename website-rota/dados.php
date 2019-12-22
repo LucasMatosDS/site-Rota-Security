@@ -8,6 +8,7 @@ include_once 'excluir.php';
 
 $cliDAO = new ClienteDAO();
 $array = $cliDAO->buscarCliente();
+//$result = $cliDAO->buscarUsuarioAdm();
 
    if(!isset($_SESSION['id'])){
 
@@ -35,7 +36,7 @@ $array = $cliDAO->buscarCliente();
 <body class="animated fadeIn">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
     <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <img src="img/menu.svg">
@@ -58,7 +59,7 @@ $array = $cliDAO->buscarCliente();
         </li>
       </ul>
     </div>
-  </nav>
+  </nav> -->
 
   <?php
       if(isset($array)){
@@ -73,6 +74,14 @@ $array = $cliDAO->buscarCliente();
     }
    ?>
    <div class="container col-md-10" style="top: 100px;">
+     <?php
+   //   if(isset($result)){
+   //   foreach($result as $cli){
+   //     var_dump($result);
+   //      echo "<h2>$cli->nome</h2>";
+   //   }
+   // }
+    ?>
    <fieldset class="fieldset-border">
      <legend class="legend-border">Controles</legend>
        <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';"><img src='img/exit.png' class="mr-1">sair</button>
