@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 17-Dez-2019 às 02:40
+-- Tempo de geração: 05-Jan-2020 às 03:17
 -- Versão do servidor: 10.4.6-MariaDB
 -- versão do PHP: 7.3.8
 
@@ -34,19 +34,21 @@ CREATE TABLE `clientes` (
   `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `cpf` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `senha` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `senha_decript` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `senha_decript` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `data` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Extraindo dados da tabela `clientes`
 --
 
-INSERT INTO `clientes` (`id`, `nome`, `email`, `cpf`, `senha`, `senha_decript`) VALUES
-(1, 'Administrador', 'ADM@ADM.COM', '000.000.000-00', 'dd4b21e9ef71e1291183a46b913ae6f2', '00000000'),
-(3, 'Maria', 'MARIA@GMAIL.COM', '222.222.222-22', 'bae5e3208a3c700e3db642b6631e95b9', '22222222'),
-(4, 'Jose', 'JOSE@GMAIL.COM', '333.333.333-33', 'd27d320c27c3033b7883347d8beca317', '33333333'),
-(5, 'Marcia', 'MARCIA@GMAIL.COM', '555.555.555-55', 'f638f4354ff089323d1a5f78fd8f63ca', '55555555'),
-(6, 'Mario', 'MARIO@GMAIL.COM', '444.444.444-44', 'b857eed5c9405c1f2b98048aae506792', '44444444');
+INSERT INTO `clientes` (`id`, `nome`, `email`, `cpf`, `senha`, `senha_decript`, `data`) VALUES
+(1, 'Administrador', 'ADM@ADM.COM', '000.000.000-00', 'dd4b21e9ef71e1291183a46b913ae6f2', '00000000', ''),
+(2, 'Tecnico', 'TECNICO@TI.COM', '111.111.111-11', '1bbd886460827015e5d605ed44252251', '11111111', ''),
+(3, 'Jose', 'JOSE@GMAIL.COM', '222.222.222-22', 'bae5e3208a3c700e3db642b6631e95b9', '22222222', '04/01/2020'),
+(4, 'Matilda', 'MATILDA@GMAIL.COM', '333.333.333-33', 'd27d320c27c3033b7883347d8beca317', '33333333', '04/01/2020'),
+(5, 'Lucas', 'LUCAS@GMAIL.COM', '444.444.444-44', 'b857eed5c9405c1f2b98048aae506792', '44444444', '04/01/2020'),
+(6, 'Julio', 'JULIO@GMAIL.COM', '888.888.888-88', '8ddcff3a80f4189ca1c9d4d902c3c909', '88888888', '04/01/2020');
 
 --
 -- Índices para tabelas despejadas

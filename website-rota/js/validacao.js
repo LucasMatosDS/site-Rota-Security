@@ -51,7 +51,7 @@
 
      }else if(senha.length < 8){
           alert('senha muito pequena, \n insira até 8 dígitos!')          
-          return false;
+          return false;          
      }
 
      return true;
@@ -102,24 +102,14 @@
 
     function recuperarSenha(){
 
-        var email = recuperarDados.emailC.value;
-        var cpf = recuperarDados.cpf.value;
+        var email = recuperarDados.email.value;
+        var senha = recuperarDados.senha.value;
+        var senha_c = recuperarDados.senha_c.value;
 
-        if(email === "" && cpf === ""){
+        if(email === "" && senha === "" && senha_c === ""){
           alert('Necessário preencher os campos!')
           return false;
-
-        }else if(email === ""){
-          alert('email invalído!')
-          return false;
-
-        }else if(cpf === "" || cpf.length < 14){
-          alert('CPF invalído!')
-          return false;
-
-        }else if(email !== "" && cpf !== "" && cpf.length <= 14){
-          alert('Dados Recuperados!')
-          return true;
+        
         }
 
     }

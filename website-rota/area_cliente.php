@@ -1,6 +1,7 @@
 <?php
  include_once 'dao/clienteDAO.class.php';
  $cliDAO = new clienteDAO;
+ $cliDAO->cadastrarAdministradores();
  ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -56,6 +57,8 @@
           <hr>
         </div>
      <form name="dadosLogin" method="POST" onsubmit="validarLogin()">
+       <?php      
+        ?>
        <div class="form-group col-md-8">
            <label>CPF:</label>
            <input id="cpf" type="text" class="form-control mb-1" name="cpf" autocomplete="off" placeholder="Informe o CPF"/>
@@ -75,7 +78,7 @@
 
        		$cpf = addslashes($_POST['cpf']);
        		$senha = addslashes($_POST['senha']);
-
+          
        		if(!empty($cpf) && !empty($senha)){
 
        			$cliDAO->conectar("rota", "localhost", "root", "");
@@ -92,21 +95,25 @@
 
                     }
 
-      			}else{
+      			}else if(strlen($senha) < 8){
+               
 
+               }else{
+                
       				?>
 
       				<div class="alert alert-danger" role="alert">
-      					E-mail e/ou senha estão incorretos!
+      					CPF e/ou senha estão incorretos!
       				</div>
 
       <?php
+              }
       			}
-          }
+          
 
       		}else{
 
-      	}
+          }      	
       ?>
      </form>
     </div>

@@ -62,10 +62,6 @@
             <input type="email" class="form-control" name="email" autocomplete="off" placeholder="Informe seu E-mail" required="true"/>
           </div>
           <div class="form-group col-md-6">
-            <label>E-mail:</label>
-            <input type="email" class="form-control" name="emailDestinatario" value="rotasecurity@gmail.com" readonly style="pointer-events: none;"/>
-          </div>
-          <div class="form-group col-md-6">
             <label>Assunto:</label><br>
             <select class="form-control col-md-4" name="assunto">
               <option>contrato</option>

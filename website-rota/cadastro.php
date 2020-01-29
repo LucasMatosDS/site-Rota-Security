@@ -99,27 +99,50 @@ ob_start();
           include_once "dao/clienteDAO.class.php";
           include_once "util/padronizacao.class.php";
 
+          $cliDAO = new ClienteDAO();
+
           $cli = new CLiente();
           $cli->nome = Padronizacao::converterMainMin($_POST['nome']);
           $cli->email = Padronizacao::converterinMain($_POST['emailC']);
           $cli->cpf = addslashes($_POST['cpf']);
-          $cli->senha = addslashes($_POST['senha']);
+          $cli->senha = addslashes($_POST['senha']);         
+          
+          $senha = addslashes($_POST['senha']);
+          $Rsenha = addslashes($_POST['Rsenha']);
 
-          if(strlen($_POST['cpf']) < 14){
-            exit;
+          if($senha == $Rsenha){
 
-          }else if(strlen($_POST['senha']) < 8){
-            exit;
+        $cliDAO->cadastrarCliente($cli);
+          
+         $cli->__destruct();
 
-          }else{
+           header("location: cadastro.php");
+    
 
-          $cliDAO = new ClienteDAO();
-          $cliDAO->cadastrarCliente($cli);          
+           
+   //        if(strlen($_POST['cpf']) < 14){
+   //          exit;
 
-          $cli->__destruct();
+   //        }else if(strlen($_POST['senha']) < 8){
+   //          exit;
 
-          header("location: cadastro.php");
-   }
+   //        }else{
+
+   //        if($cliDAO->validarDados($cli)){          
+          
+     }else{      
+
+     }
+   //   }else{
+
+   //      
+
+   //      <div class="alert alert-danger" role="alert">E-mail e/ou CPF já cadastrado no sistema!</div>
+
+   //      <?php        
+        
+   //   }
+   // }
  }
 
   ?>

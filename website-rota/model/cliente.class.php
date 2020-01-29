@@ -7,6 +7,7 @@
     private $email;
     private $cpf;
     private $senha;
+    private $data;
 
      public function __construct(){}
      public function __destruct(){}
@@ -20,6 +21,7 @@
                      Nome: $this->nome
                      E-mail: $this->email
                      CPF: $this->cpf
-                     Senha: $this->senha");
+                     Senha: $this->senha
+                     Data: $this->data");
      }
  }

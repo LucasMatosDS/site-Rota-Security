@@ -14,6 +14,11 @@ html,body {
   scroll-behavior: smooth; /* effect scroll */
 }
 
+.subtitulo{  
+  text-decoration: underline;
+  text-decoration-color: black;  
+}
+
 .navbar{
   background-color: black;
 }
@@ -207,19 +212,19 @@ textarea{
 }
 
 #btn-enviar:hover{
-  background-color: green;
+  background-color: #4040ff;
   color: white;
   opacity: 0.8;
 }
 
 #btn-limpar:hover{
-  background-color: red;
+  background-color: #ed5269;
   color: white;
   opacity: 0.8;
 }
 
 #btn-backup:hover{
-  background-color: #0e4bef;
+  background-color: #4040ff;
   color: white;
   opacity: 0.8;
 }
@@ -301,6 +306,7 @@ textarea{
   }
 
   /*configurações da tela de cadastro*/
+
   label{
   display: none;
   }
@@ -350,6 +356,23 @@ textarea{
      width: 88%;
      margin: auto;
      margin-bottom: 8px;
+  }
+
+  .redefinir{
+      margin-bottom: 16px;
+  }
+
+  #arrow-left{     
+     float: left;     
+  }
+
+  .logo-login{
+    margin-top: 40px;     
+    margin-right: 20px;
+  }
+
+  #logo{
+      margin-right: 20px;  
   }
 
 }

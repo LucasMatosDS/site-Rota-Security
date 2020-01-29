@@ -8,7 +8,6 @@ include_once 'excluir.php';
 
 $cliDAO = new ClienteDAO();
 $array = $cliDAO->buscarCliente();
-//$result = $cliDAO->buscarUsuarioAdm();
 
    if(!isset($_SESSION['id'])){
 
@@ -36,30 +35,30 @@ $array = $cliDAO->buscarCliente();
 <body class="animated fadeIn">
 
   <!-- Navigation -->
-  <!-- <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
-    <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <img src="img/menu.svg">
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Home
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Sobre</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="contato.php">Contato</a>
-        </li>
-      </ul>
-    </div>
-  </nav> -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
+      <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <img src="img/menu.svg">
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Sobre</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contato.php">Contato</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
   <?php
       if(isset($array)){
@@ -74,20 +73,42 @@ $array = $cliDAO->buscarCliente();
     }
    ?>
    <div class="container col-md-10" style="top: 100px;">
-     <?php
-   //   if(isset($result)){
-   //   foreach($result as $cli){
-   //     var_dump($result);
-   //      echo "<h2>$cli->nome</h2>";
-   //   }
-   // }
-    ?>
-   <fieldset class="fieldset-border">
+   <fieldset class="fieldset-border" >
      <legend class="legend-border">Controles</legend>
        <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';"><img src='img/exit.png' class="mr-1">sair</button>
        <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="return verificarExclusaoDeRegistros()"><img src='img/trash-all.png' class="mr-1">Excluir Registros</button>
-       <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = 'backup.php';"><img src='img/backup.png' class="mr-1">Realizar Backup</button>
+       <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './backup.php';"><img src='img/backup.png' class="mr-1">Realizar Backup</button>
      </fieldset>
+     <form name="filtrar-dados" method="post" style="float: left">
+       <div class="row">
+         <div class="form-group col-md-6">
+           <input type="text" name="txtfiltro" class="form-control" placeholder="pesquisar..." autocomplete="off">
+         </div>
+         <div class="form-group col-md-4">
+           <select name="filtro" class="form-control">
+             <option value="nome">Nome</option>
+             <option value="cpf">CPF</option>
+           </select>
+         </div>
+       </div>
+
+         <div class="form-group">
+           <button type="submit" name="filtrar" value="Filtrar" id="btn-backup" id="pesq" class="btn w-50"><img src="img/search.svg" class="mr-1">Pesquisar</button>
+         </div>
+     </form>
+     <?php
+     if(isset($_POST['filtrar'])){
+       $search = $_POST['txtfiltro'];
+       $filtro = $_POST['filtro'];
+       $cliDAO = new ClienteDAO();
+       $array = $cliDAO->filtrar($filtro, $search);
+
+       if(count($array) == 0){
+         echo "<h4 style='margin-top: 100px;'><strong>Sua pesquisa não retornou nenhum Registro!</strong></h4>";
+         return;
+       }
+     }
+    ?>
   <div class="table-responsive-md">
       <table class="table table-dark table-bordered table-hover table-condensed">
         <thead align="center">
@@ -96,7 +117,7 @@ $array = $cliDAO->buscarCliente();
       <th scope="col">Nome</th>
       <th scope="col">E-mail</th>
       <th scope="col">CPF</th>
-      <th scope="col">Senha</th>
+      <th scope="col">Data</th>
     </tr>
   </thead>
   <tbody>
@@ -109,7 +130,7 @@ $array = $cliDAO->buscarCliente();
               echo "<td>$cli->nome</td>";
               echo "<td>$cli->email</td>";
               echo "<td>$cli->cpf</td>";
-              echo "<td>$cli->senha</td>";
+              echo "<td>$cli->data</td>";
             echo "</tr>";
           }
         }

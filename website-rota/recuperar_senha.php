@@ -1,5 +1,7 @@
 <?php
+ ob_start();
  include_once 'dao/clienteDAO.class.php';
+ $cliDAO = new ClienteDAO();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -44,41 +46,76 @@
     </div>
   </nav>
 
-  <div id="cadastre_se" class="container texto cadastro">
-    <div class="card-body">
-      <div class="card-title">
-        <div align="center">
+  <div id="cadastre_se" class="container texto cadastro">   
+    <div class="card-body">     
+        <a href="area_cliente.php" id="arrow-left" title="voltar"><img src="img/arrow-left.png"></a>
+      <div class="card-title logo-login">
+        <div align="center" id="logo">
         <img src="img/logo-rota.png">
         </div>
         <h3 id="titulo-login" align="center">recuperação de senha</h3>
           </li>
           <hr>
         </div>
-     <form method="POST" action="recuperar_senha.php" name="recuperarDados" onsubmit="recuperarSenha()">
+     <form  name="recuperarDados" action="recuperar_senha.php" method="POST" onsubmit="recuperarSenha()">
        <div class="form-group col-md-8">
           <label>E-mail:</label>
-          <input type="email" class="form-control" name="emailC" autocomplete="off" placeholder="Informe seu E-mail" />
-       </div>
-       <div class="form-group col-md-8">
-           <label>CPF:</label>
-           <input id="cpf" type="text" class="form-control mb-1" name="cpf" autocomplete="off" placeholder="XXX.XXX.XXX-XX" />
-          </div>
+          <input type="email" name="email" class="form-control redefinir" autocomplete="off" placeholder="Informe seu E-mail" />          
+          <!-- <label>nova senha:</label> -->
+          <input type="hidden" name="senha" class="form-control redefinir" maxlength="8" autocomplete="off" placeholder="Insira sua nova senha"> 
+          <!-- <label>confirmar senha:</label>        -->
+          <input type="hidden" name="senha_c" class="form-control redefinir" maxlength="8" autocomplete="off" placeholder="confirme sua senha">  
+       </div>      
         <button id="btn-enviar" type="submit" name="entrar" class="btn mr-2 button-form ml-3">Recuperar</button>
       </div>
-     </form>
+        <?php
+
+        if(isset($_POST['email'])){
+
+        $email = addslashes($_POST['email']);
+        // $senha = addslashes($_POST['senha']);
+        // $senha_c = addslashes($_POST['senha_c']);        
+        $senha = $cliDAO->geraSenha(8, true, true);
+                $cliDAO->conectar("rota", "localhost", "root", "");
+
+                // if($senha != $senha_c){
+
+                  ?>
+                  
+                <!--   <div class="alert alert-danger" role="alert">senhas incompatíveis!</div> -->
+
+                  <?php
+                   // exit;
+
+                // }else{
+
+
+                if($cliDAO->recuperarSenha($email, $senha)){
+                  
+                  ?>
+
+                  <div class="alert alert-info"><?php echo "sua nova senha é: " .$senha; ?></div>
+
+                <?php
+
+                }else{
+
+                  ?>
+
+                <div class="alert alert-danger" role="alert">E-mail incorreto, tente novamente!</div>
+
+                  <?php
+                }
+              //}
+              }
+           ?>
+     </form>       
     </div>
 
   <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
-  <script src="js/jquery.mask.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
-
-  <script type="text/javascript">
-  $(document).ready(function(){
-    $("#cpf").mask("000.000.000-00", {reverse: true});
-  })
-  </script>
 </body>
 </html>
