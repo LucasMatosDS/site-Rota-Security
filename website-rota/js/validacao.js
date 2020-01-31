@@ -51,10 +51,13 @@
 
      }else if(senha.length < 8){
           alert('senha muito pequena, \n insira até 8 dígitos!')          
-          return false;          
-     }
+          return false;       
+             
+     }else{
 
      return true;
+
+   }
  }
 
  function validarCadastro(){
@@ -76,10 +79,6 @@
            alert('CPF invalído!')
            return false;
 
-    }else if(senha === ""){
-           alert('senha invalída!')
-           return false;
-
     }else if(rsenha === ""){
            alert('campo repetir senha invalído!')
            return false;
@@ -92,12 +91,6 @@
           alert('senha invalída!')
           alert('senha muito pequena, \n insira até 8 dígitos!')
             return false;
-
-    }else if(email !== "" && cpf !== "" && senha !== ""
-            && rsenha !== "" && senha === rsenha && senha && rsenha.length >= 8){
-            alert('Cadastro efetuado com sucesso!')
-            return true;
-    }
 }
 
     function recuperarSenha(){

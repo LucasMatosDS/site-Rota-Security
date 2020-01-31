@@ -9,7 +9,7 @@ class ClienteDAO{
 
   public function __construct(){
      $this->conexao = ConexaoBanco::getInstance();
-    
+
   }
 
   public function __destruct(){}
@@ -50,15 +50,16 @@ class ClienteDAO{
 
   }
 
-  public function cadastrarCliente($cli){
+  public function cadastrarCliente($cli){      
 
       try {
 
-          $cli->data = date('d/m/yy');
+          $cli->data = date('d/m/yy');        
 
         $statement = $this->conexao->prepare(
           "insert into clientes(nome,email,cpf,senha,senha_decript,data)
            VALUES(?,?,?,MD5(?),?,?)");
+
 
         $statement->bindValue(1, $cli->nome);
         $statement->bindValue(2, $cli->email);
@@ -66,7 +67,6 @@ class ClienteDAO{
         $statement->bindValue(4, $cli->senha);
         $statement->bindValue(5, $cli->senha);
         $statement->bindValue(6, $cli->data);
-
         $statement->execute();
 
       } catch (PDOException $e) {
@@ -74,11 +74,20 @@ class ClienteDAO{
       }
    }
 
+   public function cadastrarArquivo(){
+
+     $statement = $this->conexao->query("alter table arquivos auto_increment = 1;");
+
+     $statement = $this->conexao->query("insert into arquivos(nome_arq,descricao,fk_id) values('','', 0)");     
+
+   }
+   
    public function buscarCliente(){
 
      try{
 
-       $statement = $this->conexao->query("select * from clientes;");
+       //$statement = $this->conexao->query("select * from clientes;");
+       $statement = $this->conexao->query("");
        $statement = $this->conexao->query("select * from clientes where id != 1 and id != 2 order by nome;");
        $array = $statement->fetchAll(PDO::FETCH_CLASS,"Cliente");
        return $array;
@@ -172,19 +181,16 @@ public function deletarTodosOsRegistros(){
 
       public function validarDados($cli){
 
-          $statement = $this->conexao->prepare("select id from clientes where email = :e and cpf = :c");
-
-          $statement->bindValue(":e", $cli->email);
+          $statement = $this->conexao->prepare("select id from clientes where cpf = :c or email = :e");
+        
           $statement->bindValue(":c", $cli->cpf);
+          $statement->bindValue(":e", $cli->email);
           $statement->execute();
 
-          if($statement->rowCount() != 0){
-
-
+          if($statement->rowCount() > 0){
              return true;
 
           }else{
-
              return false;
           }
       }
@@ -259,5 +265,45 @@ public function deletarTodosOsRegistros(){
           echo "Erro: ao filtrar! ".$e;
 
         }
+      }
+
+
+      // public function filtrarArquivos($filtro, $search){
+      //   try {
+      //     $query = "";
+      //     switch ($filtro) {
+      //       case "nome": $query = "where nome like '%".$search."%'";
+      //       break;
+      //       case "cpf": $query = "where cpf like '%".$search."%'";
+      //       break;
+
+      //     }
+      //     if(empty($search)){
+      //       $query = "";
+      //     }
+      //     $statement = $this->conexao->query("select * from arquivos ".$query);
+      //     $array = $statement->fetchAll(PDO::FETCH_CLASS, "Arquivo");
+      //     return $array;
+
+      //   } catch (PDOException $e) {
+      //     echo "Erro: ao filtrar! ".$e;
+
+      //   }
+      // }
+
+      public function alterar($arq){
+
+              try{
+
+                $statement = $this->conexao->prepare("update arquivos set nome_arq = :n, descricao = :d");
+
+                $statement->bindValue(":n", $arq->nome_arq);
+                $statement->bindValue(":d", $arq->descricao);               
+                $statement->execute();
+
+
+              }catch(PDOException $e){
+                   echo "Erro: ao alterar dados!". $e;
+              }
       }
 }

@@ -76,7 +76,7 @@ $array = $cliDAO->buscarCliente();
    <div class="container col-md-10" style="top: 100px;">
      <button type="button" href="sair.php" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';">sair</button>
     <form action="" method="POST" id="form-pesquisa">
-     <input type="text" class="form-control" name="pesquisa" id="pesquisa" autocomplete="off" placeholder="Informe seu CPF"/>
+     <input type="text" class="form-control" name="pesquisa" id="pesquisa" autocomplete="off" placeholder="Informe seu CPF"/>    
     </form>
   <div class="table-responsive-md">
     <table class="table table-dark table-bordered table-hover table-condensed">
@@ -93,12 +93,6 @@ $array = $cliDAO->buscarCliente();
   </table>
  </div>
 </div>
-
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#cpf").mask("000.000.000-00", {reverse: true});
-})
-</script>
 
   <script type="text/javascript">
     function verificarExclusaoPeloCPF(cpf){

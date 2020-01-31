@@ -20,7 +20,7 @@ ob_start();
 
 <body class="animated fadeIn">
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
     <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <img src="img/menu.svg">
@@ -43,7 +43,7 @@ ob_start();
         </li>
       </ul>
     </div>
-  </nav>
+  </nav> -->
 
   <div id="cadastre_se" class="container texto cadastro">
     <div class="card-body">
@@ -51,31 +51,19 @@ ob_start();
         <div align="center">
         <img src="img/logo-rota.png">
         </div>
-        <h3 id="titulo-login" align="center">cadastre-se</h3>
+        <h3 id="titulo-login" align="center">editar arquivo</h3>
           </li>
           <hr>
         </div>
-     <form method="POST" action="cadastro.php" name="dadosCadastro" onsubmit="validarCadastro()">
+     <form method="POST" action="" name="dadosArquivo">
        <div class="form-group col-md-8">
-          <label>Nome Completo:</label>
-          <input type="text" class="form-control" name="nome" autocomplete="off" placeholder="Informe seu Nome" required="true"/>
-       </div>
+          <label>Descrição do Arquivo:</label>
+          <input type="text" class="form-control" name="descricao" autocomplete="off" placeholder="Informe a descrição do arquivo" required="true"/>
+       </div>  
        <div class="form-group col-md-8">
-          <label>E-mail:</label>
-          <input type="email" class="form-control" name="emailC" autocomplete="off" placeholder="Informe seu E-mail" required="true"/>
-       </div>
-       <div class="form-group col-md-8">
-           <label>CPF:</label>
-           <input id="cpf" type="text" class="form-control mb-1" name="cpf" autocomplete="off" placeholder="XXX.XXX.XXX-XX" required="true"/>
-          </div>
-          <div class="form-group col-md-8">
-            <label>Senha:</label>
-            <input type="password" class="form-control mb-2" name="senha" maxlength="8" autocomplete="off" placeholder="Informe a Senha" required="true"/>
-          </div>
-          <div class="form-group col-md-8">
-            <label>Repetir Senha:</label>
-            <input type="password" class="form-control mb-2" name="Rsenha" maxlength="8" autocomplete="off" placeholder="Confirmar Senha" required="true" />
-          </div>
+           <label>Selecione o Arquivo:</label>
+           <input type="file" name="arq" required="true"/>
+          </div>    
         <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 button-form ml-3">Cadastrar</button>
         <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2 button-form">
    Cancelar</button>
@@ -95,63 +83,20 @@ ob_start();
 
     if(isset($_POST['cadastrar'])){
 
-          include_once "model/cliente.class.php";
+          include_once "model/arquivo.class.php";
           include_once "dao/clienteDAO.class.php";
-          include_once "util/padronizacao.class.php";
 
           $cliDAO = new ClienteDAO();
 
-          $cli = new CLiente();
-          $cli->nome = Padronizacao::converterMainMin($_POST['nome']);
-          $cli->email = Padronizacao::converterinMain($_POST['emailC']);
-          $cli->cpf = addslashes($_POST['cpf']);
-          $cli->senha = addslashes($_POST['senha']);         
+          $arq = new Arquivo();
+
+          $arq->id_arq = $_GET['id'];
+          $arq->nome_arq = addslashes($_POST['arq']);
+          $arq->descricao = addslashes($_POST['descricao']);         
           
-          $senha = addslashes($_POST['senha']);
-          $Rsenha = addslashes($_POST['Rsenha']);
+            $cliDAO->alterar($arq);                                     
 
-
-          if(strlen($_POST['cpf']) < 14){
-                      exit;
-
-                    }else if(strlen($_POST['senha']) < 8){
-                      exit;
-
-                    }else{
-
-          if($cliDAO->validarDados($cli)){                                 
-          
-          ?>
-
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          Impossivél cadastrar usuário, E-mail e/ou CPF já cadastrado no sistema!
-        </div>
-
- 
-        <?php     
-
-     }else{  
-
-         if($senha == $Rsenha){                     
-          
-            $cliDAO->cadastrarCliente($cli);
-            $cliDAO->cadastrarArquivo();                                     
-
-             $cli->__destruct();                    
-
-           ?>
-
-       
-       <div class="alert alert-success alert-dismissible" role="alert">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Cadastro efetuado com sucesso!
-       </div>
-
-          <?php
-
-       }            
-     }
-   }
+             $arq->__destruct();                             
  }
 
 

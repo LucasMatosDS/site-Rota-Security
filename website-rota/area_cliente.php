@@ -57,15 +57,13 @@
           <hr>
         </div>
      <form name="dadosLogin" method="POST" onsubmit="validarLogin()">
-       <?php      
-        ?>
        <div class="form-group col-md-8">
            <label>CPF:</label>
-           <input id="cpf" type="text" class="form-control mb-1" name="cpf" autocomplete="off" placeholder="Informe o CPF"/>
+           <input id="cpf" type="text" class="form-control mb-1" name="cpf" autocomplete="off" placeholder="Informe o CPF" required="true"/>
           </div>
           <div class="form-group col-md-8">
             <label>Senha:</label>
-            <input type="password" class="form-control mb-2" name="senha" maxlength="8" autocomplete="off" placeholder="Informe a Senha"/>
+            <input type="password" class="form-control mb-2" name="senha" maxlength="8" autocomplete="off" placeholder="Informe a Senha" required="true"/>
             <li><a id="cad" href="cadastro.php">cadastre-se</a></li>
             <li><a id="rsenha" href="recuperar_senha.php">esqueceu a senha?</a></li>
           </div>
@@ -102,9 +100,10 @@
                 
       				?>
 
-      				<div class="alert alert-danger" role="alert">
-      					CPF e/ou senha estão incorretos!
-      				</div>
+      		<div class="alert alert-danger alert-dismissible" role="alert">
+             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  CPF e/ou senha estão incorretos!
+          </div>      			
 
       <?php
               }
@@ -118,8 +117,8 @@
      </form>
     </div>
 
-  <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>
+  <script src="js/jquery.slim.min.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/jquery.mask.min.js"></script>
   <script src="js/bootstrap.min.js"></script>

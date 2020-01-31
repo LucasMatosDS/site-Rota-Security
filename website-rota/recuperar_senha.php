@@ -93,8 +93,11 @@
                 if($cliDAO->recuperarSenha($email, $senha)){
                   
                   ?>
-
-                  <div class="alert alert-info"><?php echo "sua nova senha é: " .$senha; ?></div>
+                  
+          <div class="alert alert-info alert-dismissible" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <?php echo "sua nova senha é: " .$senha; ?>
+          </div>                  
 
                 <?php
 
@@ -102,7 +105,10 @@
 
                   ?>
 
-                <div class="alert alert-danger" role="alert">E-mail incorreto, tente novamente!</div>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        E-mail incorreto, tente novamente!
+                </div>
 
                   <?php
                 }
