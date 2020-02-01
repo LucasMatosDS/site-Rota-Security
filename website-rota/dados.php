@@ -94,28 +94,31 @@ $array = $cliDAO->buscarCliente();
        </div>
 
          <div class="form-group">
-           <button type="submit" name="filtrar" value="Filtrar" id="btn-backup" id="pesq" class="btn w-50"><img src="img/search.svg" class="mr-1">Pesquisar</button>
+           <button type="submit" name="filtrar" value="Filtrar" id="btn-backup" class="btn w-50" id="pesquisa"><img src="img/search.svg" class="mr-1">Pesquisar</button>
          </div>
      </form>
 
      <?php
-     if(isset($_POST['filtrar'])){
+
+      if(isset($_POST['filtrar'])){
        $search = $_POST['txtfiltro'];
-       $filtro = $_POST['filtro'];
+       $filtro = $_POST['filtro'];         
 
        $cliDAO = new ClienteDAO();      
 
-       $array = $cliDAO->filtrar($filtro, $search);
-       
-       if(count($array) == 0){
-         echo "<h4 style='margin-top: 100px;'><strong>Sua pesquisa não retornou nenhum Registro!</strong></h4>";
-         return;
-       }
-     }
+       $array = $cliDAO->filtrar($filtro, $search);                         
+
+      //nova verificação depois da versão do PHP 7.2
+       $verifica = (is_array($array) ? count($array) : 0);
+        if ($verifica == 0) {
+                echo "<h4 style='margin-top: 100px;'><strong>Sua pesquisa não retornou nenhum Registro!</strong></h4>";
+          return;
+    }                
+   }
     ?>
 
   <div class="table-responsive-md">
-      <table class="table table-dark table-bordered table-hover table-condensed">
+      <table id="tabela" class="table table-dark table-bordered table-hover table-condensed">
         <thead align="center">
     <tr>
       <th>Ações</th>
@@ -129,9 +132,9 @@ $array = $cliDAO->buscarCliente();
   </thead>
   <tbody>
 
-      <?php
+      <?php                
 
-          foreach($array as $cli){
+          foreach($array as $cli){                    
             echo "<tr>
               <td align='center'><a href='dados.php' class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo'></a>
               <a href='alterar_arquivo.php?id=$cli->id' class='btn btn-light border border-light text-dark btn-deletar'><img src='img/edite.png' title='Editar'></a>
@@ -142,14 +145,14 @@ $array = $cliDAO->buscarCliente();
               echo "<td>$cli->cpf</td>";
               echo "<td>$cli->data</td>";         
             echo "</tr>";
-          }
+         }
         }
        ?>
    </tbody>
   </table>
  </div>
 </div>
-  <script>
+     <script type="text/javascript">
 
     function verificarExclusaoPeloCPF(cpf){
 

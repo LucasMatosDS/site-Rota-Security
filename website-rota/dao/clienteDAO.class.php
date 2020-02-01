@@ -251,12 +251,17 @@ public function deletarTodosOsRegistros(){
             case "nome": $query = "where nome like '%".$search."%'";
             break;
             case "cpf": $query = "where cpf like '%".$search."%'";
-            break;
-
+            break;            
           }
+          
           if(empty($search)){
-            $query = "";
+            $query = "";    
+                  
+          }else if($search == "administrador" || $search == "tecnico"){  
+              $query = "";                  
+              return;
           }
+
           $statement = $this->conexao->query("select * from clientes ".$query);
           $array = $statement->fetchAll(PDO::FETCH_CLASS, "Cliente");
           return $array;

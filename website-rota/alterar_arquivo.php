@@ -20,7 +20,7 @@ ob_start();
 
 <body class="animated fadeIn">
   <!-- Navigation -->
-  <!-- <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
     <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <img src="img/menu.svg">
@@ -43,10 +43,11 @@ ob_start();
         </li>
       </ul>
     </div>
-  </nav> -->
+  </nav>
 
   <div id="cadastre_se" class="container texto cadastro">
     <div class="card-body">
+        <a href="dados.php" id="arrow-left" title="voltar"><img src="img/arrow-left.png"></a>
       <div class="card-title">
         <div align="center">
         <img src="img/logo-rota.png">
@@ -61,8 +62,8 @@ ob_start();
           <input type="text" class="form-control" name="descricao" autocomplete="off" placeholder="Informe a descrição do arquivo" required="true"/>
        </div>  
        <div class="form-group col-md-8">
-           <label>Selecione o Arquivo:</label>
-           <input type="file" name="arq" required="true"/>
+           <label>Selecione o Arquivo:</label>           
+           <input type="file" name="arq" required="true">                      
           </div>    
         <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 button-form ml-3">Cadastrar</button>
         <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2 button-form">

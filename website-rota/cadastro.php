@@ -55,7 +55,7 @@ ob_start();
           </li>
           <hr>
         </div>
-     <form method="POST" action="cadastro.php" name="dadosCadastro" onsubmit="validarCadastro()">
+     <form method="POST" action="cadastro.php" name="dadosCadastro" onsubmit="return validarCadastro()">
        <div class="form-group col-md-8">
           <label>Nome Completo:</label>
           <input type="text" class="form-control" name="nome" autocomplete="off" placeholder="Informe seu Nome" required="true"/>
@@ -141,7 +141,6 @@ ob_start();
              $cli->__destruct();                    
 
            ?>
-
        
        <div class="alert alert-success alert-dismissible" role="alert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Cadastro efetuado com sucesso!
@@ -149,6 +148,16 @@ ob_start();
 
           <?php
 
+       }else{
+
+         ?>
+
+       <div class="alert alert-danger alert-dismissible" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+             senhas não compatíveis!
+       </div>
+
+         <?php
        }            
      }
    }
@@ -158,8 +167,8 @@ ob_start();
   ?>
 
     </div>
-  <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>
+  <script src="js/jquery.slim.min.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/jquery.mask.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -169,6 +178,7 @@ ob_start();
   $(document).ready(function(){
     $("#cpf").mask("000.000.000-00", {reverse: true});
   })
+
   </script>
 </body>
 </html>

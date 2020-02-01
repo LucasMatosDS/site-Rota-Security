@@ -32,34 +32,6 @@
       return true;
 }
 
- function validarLogin(){
-
-    var cpf = dadosLogin.cpf.value;
-    var senha = dadosLogin.senha.value;
-
-    if(cpf === "" && senha === ""){
-          alert('Necessário preencher os campos!')
-          return false;
-
-    }else if(cpf === "" || cpf.length < 14){
-          alert('CPF invalído!')
-          return false;
-
-    }else if(senha === ""){
-          alert('senha invalída!')
-          return false;
-
-     }else if(senha.length < 8){
-          alert('senha muito pequena, \n insira até 8 dígitos!')          
-          return false;       
-             
-     }else{
-
-     return true;
-
-   }
- }
-
  function validarCadastro(){
 
     var email = dadosCadastro.emailC.value;
@@ -83,7 +55,7 @@
            alert('campo repetir senha invalído!')
            return false;
 
-    }else if(senha !== rsenha){
+    }else if(senha == rsenha){
             alert('senhas não compatíveis!')
             return false;
 
