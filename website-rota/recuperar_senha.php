@@ -66,7 +66,8 @@
           <!-- <label>confirmar senha:</label>        -->
           <input type="hidden" name="senha_c" class="form-control redefinir" maxlength="8" autocomplete="off" placeholder="confirme sua senha">  
        </div>      
-        <button id="btn-enviar" type="submit" name="entrar" class="btn mr-2 button-form ml-3">Recuperar</button>
+        <button id="btn-enviar" type="submit" name="entrar" class="btn mr-2 button-form ml-3">Recuperar
+       </button>        
       </div>
         <?php
 
@@ -96,7 +97,7 @@
                   
           <div class="alert alert-info alert-dismissible" role="alert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <?php echo "sua nova senha é: " .$senha; ?>
+                <?php echo "sua nova senha é: "."<strong>".$senha; "</strong>"?>
           </div>                  
 
                 <?php

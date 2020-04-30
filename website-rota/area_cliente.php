@@ -1,6 +1,6 @@
 <?php
  include_once 'dao/clienteDAO.class.php';
- $cliDAO = new clienteDAO;
+ $cliDAO = new clienteDAO();
  $cliDAO->cadastrarAdministradores();
  ?>
 <!DOCTYPE html>
@@ -62,8 +62,13 @@
            <input id="cpf" type="text" class="form-control mb-1" name="cpf" autocomplete="off" placeholder="Informe o CPF" />
           </div>
           <div class="form-group col-md-8">
-            <label>Senha:</label>
-            <input type="password" class="form-control mb-2" name="senha" maxlength="8" autocomplete="off" placeholder="Informe a Senha" />
+          <label>Senha:</label>
+           <div class="input-group">
+            <input type="password" class="form-control mb-2" name="senha" maxlength="8" autocomplete="off" placeholder="Informe a Senha" id="password"/>
+                    <div class="input-group-btn ml-1">
+                    <button class="btn rounded border-dark" type="button" id="showPassword" value="mostrar"><img src="img/hide.png" id="image_btn"></button>
+              </div>
+            </div>
             <li><a id="cad" href="cadastro.php">cadastre-se</a></li>
             <li><a id="rsenha" href="recuperar_senha.php">esqueceu a senha?</a></li>
           </div>
@@ -76,52 +81,43 @@
 
        		$cpf = addslashes($_POST['cpf']);
        		$senha = addslashes($_POST['senha']);
-          
+
        		if(!empty($cpf) && !empty($senha)){
 
        			$cliDAO->conectar("rota", "localhost", "root", "");
 
       				if($cliDAO->logar($cpf,$senha)){
 
-                if($cpf == '000.000.000-00' && $senha == '00000000' || $cpf == '111.111.111-11' && $senha == '11111111'){
-
-                      header("location: dados.php");
-
-                }else{
-
-                  header("location: area_privada.php");
-
-                    }
 
       			}else if(strlen($senha) < 8){
-               
+
 
                }else{
-                
+
       				?>
 
       		<div class="alert alert-danger alert-dismissible" role="alert">
              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                  CPF e/ou senha estão incorretos!
-          </div>      			
+                 <strong>CPF e/ou senha estão incorretos!</strong>
+          </div>
 
       <?php
               }
       			}
-          
+
 
       		}else{
 
-          }      	
+          }
       ?>
      </form>
     </div>
 
   <script src="js/jquery.slim.min.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
-  <script src="js/jquery.mask.min.js"></script>  
+  <script src="js/jquery.mask.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  <script src="js/bootstrap.bundle.min.js"></script>  
+  <script src="js/bootstrap.bundle.min.js"></script>
 
   <script type="text/javascript">
   $(document).ready(function(){
@@ -135,14 +131,47 @@
 
     if(cpf === "" && senha === ""){
           alert('Necessário preencher os campos!')
-          return false;    
-             
+          return false;
+
      }else{
 
      return true;
 
    }
  }
+
+ // Check javascript has loaded
+$(document).ready(function(){
+   var img = document.getElementById('image_btn');
+
+  // Click event of the showPassword button
+  $('#showPassword').on('click', function(){
+
+    // Get the password field
+    var passwordField = $('#password');
+
+    // Get the current type of the password field will be password or text
+    var passwordFieldType = passwordField.attr('type');
+
+    // Check to see if the type is a password field
+    if(passwordFieldType == 'password')
+    {
+        // Change the password field to text
+        passwordField.attr('type', 'text');
+
+        // Change the Text on the show password button to Hide
+       // $(this).val('ocultar');
+       img.src = 'img/show.png';
+    } else {
+        // If the password field type is not a password field then set it to password
+        passwordField.attr('type', 'password');
+
+        // Change the value of the show password button to Show
+        //$(this).val('mostrar');
+        img.src = 'img/hide.png';
+    }
+  });
+});
   </script>
 </body>
 </html>

@@ -55,7 +55,7 @@ class BackupDatabase
 
         // Gerando nome único para o arquivo
         date_default_timezone_set('America/Sao_Paulo');
-        $fileName = 'ROTA-BACKUP-'. date('d-m-y H:i:s', strtotime('-1 Day')) . '.sql.zip';
+        $fileName = 'ROTA-BACKUP-'. date('d-m-y H:i:s') . '.sql.zip';
         $filePath = $this->backupFolder . '/' . $fileName;
 for($i = 0; $i <= 10; $i++){
         // Definindo informações para geração do backup
@@ -66,8 +66,14 @@ for($i = 0; $i <= 10; $i++){
 
         // Gerando backup
         $dump->start($filePath);
-        echo "Executando Backup ...";
-        echo "<br>Gerando Backup na pasta: '{$filePath}'" . PHP_EOL;
+        echo "<body style='background: black;'>
+        <div align='center'>        
+        <img src='img/logo-rota.png'>
+        <p style='color: white;font-size: 25px; align='center'>
+        Executando Backup ...
+        <br>Gerando Backup na pasta: '{$filePath}'</p>" . PHP_EOL.
+        "</div>
+        </body>";
 
         // Limpando backups antigos
         $this->clearOldFiles();
@@ -106,7 +112,7 @@ for($i = 0; $i <= 10; $i++){
             if ($numberFiles > $this->maxNumberFiles) {
                 // Removemos o arquivo da pasta
                 unlink($file);
-                echo "Apagado backup: '{$file}'" . PHP_EOL;
+                echo "<div align='center'><p style='color: red;font-size: 25px;'>Apagando backup: '{$file}'</p></div>" . PHP_EOL;
             }
         }
 

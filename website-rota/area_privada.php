@@ -31,6 +31,66 @@ $array = $cliDAO->buscarCliente();
   <link rel="stylesheet" type="text/css" href="./animate.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <title>Rota</title>
+  <script src="js/jquery-2.1.0.js"></script>
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+
+    //Aqui a ativa a imagem de load
+    function loading_show(){
+    $('#loading').html("<center><img src='img/loading1.gif' width='40px'/></center>").fadeIn('fast');
+    }
+    
+    //Aqui desativa a imagem de loading
+    function loading_hide(){
+        $('#loading').fadeOut('fast');
+    }       
+    
+    
+    // aqui a função ajax que busca os dados em outra pagina do tipo html, não é json
+    function load_dados(valores, page, div)
+    {
+        $.ajax
+            ({
+                type: 'POST',
+                dataType: 'html',
+                url: page,
+                beforeSend: function(){//Chama o loading antes do carregamento
+                  loading_show();
+        },
+                data: valores,
+                success: function(msg)
+                {
+                    loading_hide();
+                    var data = msg;
+              $(div).html(data).fadeIn();       
+                }
+            });
+    }
+    
+    //Aqui eu chamo o metodo de load pela primeira vez sem parametros para pode exibir todos
+   load_dados(null, 'pesquisa.php', '#MostraPesq');
+    
+    
+    //Aqui uso o evento key up para começar a pesquisar, se valor for maior q 0 ele faz a pesquisa
+    $('#pesquisa').keyup(function(){
+        
+        var valores = $('#form-pesquisa').serialize()//o serialize retorna uma string pronta para ser enviada
+        
+        //pegando o valor do campo #pesquisaCliente
+        var $parametro = $(this).val();
+        
+        if($parametro.length >= 1)
+        {
+            load_dados(valores, 'pesquisa.php', '#MostraPesq');
+        }else
+        {
+            load_dados(null, 'pesquisa.php', '#MostraPesq');
+        }
+    });
+
+  });
+  </script> 
 </head>
 <body class="animated fadeIn">
 
@@ -60,41 +120,28 @@ $array = $cliDAO->buscarCliente();
     </div>
   </nav>
 
-  <?php
-      if(isset($array)){
-          if(count($array) == 0){
-                echo "<div class='col-md-12'>
-                <h3 align='center' class='alert mt-3' role='alert' style='background: black; color: white;'>Não há registro cadastrado no sistema!
-                <a href='index.html' style='color: red;'>Voltar a Página Inicial</a>
-                </h3>
-                </div>";
-                unset($_SESSION['id']);
-                return;
-    }
-  }
-   ?>
    <div class="container col-md-10" style="top: 100px;">
-     <button type="button" href="sair.php" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';">sair</button>
-    <form action="" method="POST" id="form-pesquisa">
-     <input type="text" class="form-control" name="pesquisa" id="pesquisa" autocomplete="off" placeholder="Informe seu CPF"/>    
-    </form>
-  <div class="table-responsive-md">
-    <table class="table table-dark table-bordered table-hover table-condensed">
-        <thead align="center">
-    <tr>
-      <th>Ações</th>
-      <th>Nome</th>
-      <th>CPF</th>
-    </tr>
-  </thead>  
-  <tbody class="resultado">
+     <button type="button" href="sair.php" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';">sair</button>        
+    <div>
+      <form name="form-pesquisa" id="form-pesquisa" method="post" action="">        
+            <div class="mt-1">              
+             <p style="color: red;">*Informe seu CPF no campo de texto para iniciar a pesquisar.</p>
+              <input type="text" name="pesquisa" id="pesquisa" class="form-control" placeholder="Insira seu CPF" autocomplete="off" />                   
+            </div>        
+      </form>   
+    </div>  
 
-   </tbody>
-  </table>
- </div>
-</div>
-
+      <div id="contentLoading">
+        <div id="loading"></div>
+      </div>
+      <div>
+        <div id="MostraPesq"></div>
+       </div>
+      </div>
+     </div>
+ 
   <script type="text/javascript">
+
     function verificarExclusaoPeloCPF(cpf){
         var bol = true;
         var decisao = confirm('Desejá Excluir o Registro ?');
@@ -116,7 +163,7 @@ $array = $cliDAO->buscarCliente();
 </script>
   <script src="js/jquery.mask.min.js"></script>
   <script src="js/jquery.slim.min.js"></script>
-  <script src="js/validacao.js"></script>
+  <script src="js/validacao.js"></script>  
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/refresh.js"></script>
   <script src="js/bootstrap.min.js"></script>

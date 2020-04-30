@@ -1,6 +1,18 @@
 <?php
 session_start();
 ob_start();
+  
+ if(isset($_GET['id'])){        
+        
+      include_once 'model/cliente.class.php';
+      include_once 'dao/clienteDAO.class.php';
+
+      $cliDAO = new ClienteDAO();
+
+          $array = $cliDAO->filtrar('id', $_GET['id']);          
+
+          $cli = $array[0];
+ }
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -20,7 +32,7 @@ ob_start();
 
 <body class="animated fadeIn">
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+<!--   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
     <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <img src="img/menu.svg">
@@ -43,7 +55,7 @@ ob_start();
         </li>
       </ul>
     </div>
-  </nav>
+  </nav> -->
 
   <div id="cadastre_se" class="container texto cadastro">
     <div class="card-body">
@@ -56,14 +68,14 @@ ob_start();
           </li>
           <hr>
         </div>
-     <form method="POST" action="" name="dadosArquivo">
+     <form method="POST" action="" name="dadosArquivo" enctype="multipart/form-data">       
        <div class="form-group col-md-8">
           <label>Descrição do Arquivo:</label>
-          <input type="text" class="form-control" name="descricao" autocomplete="off" placeholder="Informe a descrição do arquivo" required="true"/>
+          <textarea type="text" class="form-control"  id="descricao" name="descricao" autocomplete="off" required="true" placeholder="Informe a descrição do Arquivo..." maxlength="200"></textarea>
        </div>  
        <div class="form-group col-md-8">
            <label>Selecione o Arquivo:</label>           
-           <input type="file" name="arq" required="true">                      
+           <input type="file" name="arq" id="arquivo" accept=".png,.jpg,.mp4,.pdf,.doc,.docx" required="true">                      
           </div>    
         <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 button-form ml-3">Cadastrar</button>
         <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2 button-form">
@@ -83,27 +95,51 @@ ob_start();
  <?php
 
     if(isset($_POST['cadastrar'])){
+                          
+          include_once 'model/cliente.class.php';
+          include_once 'dao/clienteDAO.class.php';
 
-          include_once "model/arquivo.class.php";
-          include_once "dao/clienteDAO.class.php";
+          $cli->id = $_GET['id'];
+          $cli->descricao = addslashes($_POST['descricao']);         
 
-          $cliDAO = new ClienteDAO();
 
-          $arq = new Arquivo();
+          $fotos = array();
 
-          $arq->id_arq = $_GET['id'];
-          $arq->nome_arq = addslashes($_POST['arq']);
-          $arq->descricao = addslashes($_POST['descricao']);         
-          
-            $cliDAO->alterar($arq);                                     
+        if(isset($_FILES['arq'])){               
+              //salvando dentro da pasta img.
+             $cli->nome_arq = md5(uniqid($_FILES['arq']['name']));
+                move_uploaded_file($_FILES['arq']['tmp_name'], 'arquivos/'.$cli->nome_arq);
+                //echo "<p>movendo...".$_FILES['arq']['name']."</p>";
 
-             $arq->__destruct();                             
- }
+                 if(!empty($_FILES['arq']['name'])){
+                     
+                    ?>
+
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Dados alterados com sucesso!</strong>
+                </div>
+
+                    <?php
+                 
+                 }else{ 
+
+                 }
+
+                //salvar nomes para enviar para o banco.
+
+                //inserindo dentro da variavel fotos o nome da imagem.
+                array_push($fotos, $cli->nome_arq);                      
+           
+            $cliDAO = new ClienteDAO();
+            $cliDAO->alterar($cli);           
+
+             $cli->__destruct();                             
+  }
+}
 
 
   ?>
-
-    </div>
   <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
@@ -111,10 +147,19 @@ ob_start();
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
 
-  <script type="text/javascript">
-  $(document).ready(function(){
-    $("#cpf").mask("000.000.000-00", {reverse: true});
-  })
+<script type="text/javascript">
+  function baixarMidia(){
+    var img =  confirm('voce desejá fazer o donwload do arquivo ?');
+
+     if(img == true){                 
+     $('a#download').attr({target: '_blank', 
+                    href  : 'img/<?php echo $arq->nome_arq['foto_capa'];?>'});                         
+                    
+          
+     }else if(img != true){
+
+     }
+  }
   </script>
 </body>
 </html>

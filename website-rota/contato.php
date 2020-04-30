@@ -71,7 +71,7 @@
           </div>
         <div class="form-group col-md-6">
           <label>Mensagem:</label>
-          <textarea name="mensagem" cols="50" rows="8" maxlength="500" class="form-control" autocomplete="off" placeholder="Digite aqui sua Mensagem..." onchange="this.value = this.value.toUpperCase()" required="true"></textarea>
+          <textarea name="mensagem" cols="50" rows="8" maxlength="600" class="form-control" autocomplete="off" placeholder="Digite aqui sua Mensagem..." onchange="this.value = this.value.toUpperCase()" required="true"></textarea>
           </div>
           </div>
   <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 button-form">

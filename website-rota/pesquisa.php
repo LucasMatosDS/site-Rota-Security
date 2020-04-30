@@ -1,40 +1,63 @@
 <?php
-$servidor = "localhost";
-$usuario = "root";
-$senha = "";
-$dbname = "rota";
-
-$conn = mysqli_connect($servidor, $usuario, $senha, $dbname);
 
 include_once  'dao/clienteDAO.class.php';
 include_once  'model/cliente.class.php';
 include_once  'excluir.php';
 
-$cliDAO = new ClienteDAO();
-$array = $cliDAO->buscarCliente();
+//recebemos nosso parâmetro vindo do form
+	$parametro = isset($_POST['pesquisa']) ? $_POST['pesquisa'] : null;
+	$msg = "";
 
-$resultado = filter_input(INPUT_POST, 'palavra', FILTER_SANITIZE_STRING);
+	 if($parametro == ""){
+	 	
+	 }else{
 
-//Pesquisar no banco de dados nome do usuario referente a palavra digitada
-$result_user = "select * from clientes where cpf like '%$resultado%' LIMIT 20";
-$resultado_user = mysqli_query($conn, $result_user);
+	//começamos a concatenar nossa tabela
+ 	$msg .= "<div class='table-responsive-md'>";
+	$msg .= "<table class='table table-dark table-bordered table-hover table-condensed'>";
+	 $msg .= "	<thead align='center'>";
+	 $msg .= "		<tr>";
+	 $msg .= "			<th>Ações</th>";
+	 $msg .= "			<th>Nome</th>";
+	 $msg .= "			<th>E-mail</th>";
+	 $msg .= "			<th>Descrição</th>";
+	 $msg .= "		</tr>";
+	 $msg .= "	</thead>";
+	$msg .= "	<tbody>";
+				
+				//requerimos a classe de conexão												
 
-if(($resultado_user) AND ($resultado_user->num_rows != 0)){
-	 while($row_user = mysqli_fetch_assoc($resultado_user)){
-	  foreach($array as $cli){
-		 echo "
-			 <tr>".
-			 "<td><a href='' class='btn btn-warning border border-light text-dark'><img src='img/download.png' title='Baixar Arquivo'></a>
-			 <a href='area_privada.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF();' title='Excluir Registro'><img src='img/trash.svg' onclick='window.location.href = 'excluir.php'';></a></td>
-			 ".
-			 "<td>".$row_user['nome']."</td>".
-			 "<td>".$row_user['cpf']."</td>".
-			 "</tr>";
-		   }
-		 }
+					try {
+						
+					   $cliDAO = new ClienteDAO();
 
-}else{
-	echo "Nenhum cliente encontrado ...";
-}
+						$resultado = $cliDAO->selecionar("select * from clientes WHERE cpf LIKE '$parametro%'");						
+
+						}catch (PDOException $e){
+							echo $e->getMessage();
+						}	
+						//resgata os dados na tabela
+						if(count($resultado)){
+							foreach ($resultado as $result) {
+
+	$msg .= "<tr>";
+	$msg .= "<td align='center'><a href=''  class='btn btn-warning border border-light text-dark'><img src='img/download.png' title='Baixar Arquivo'></a>
+			 </td>";
+	$msg .="<td>".$result['nome']."</td>";
+	$msg .="<td>".$result['email']."</td>";
+	$msg .="<td>".$result['descricao']."</td>";
+	$msg .="</tr>";
+
+			}
+   				}else{
+	$msg = "";
+	$msg .="<h4 align='center'><strong>Sua pesquisa não retornou nenhum Registro!</strong></h4>";
+						}
+	$msg .="</tbody>";
+	$msg .="</table>";
+    $msg .= "</div>";
+	//retorna a msg concatenada
+	echo $msg;
+ }
 
 ?>

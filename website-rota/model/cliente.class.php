@@ -8,6 +8,8 @@
     private $cpf;
     private $senha;
     private $data;
+    private $nome_arq;
+    private $descricao;
 
      public function __construct(){}
      public function __destruct(){}
@@ -22,6 +24,8 @@
                      E-mail: $this->email
                      CPF: $this->cpf
                      Senha: $this->senha
-                     Data: $this->data");
+                     Data: $this->data
+                     Nome do Arquivo: $this->nome_arq
+                     Descrição: $this->descricao");
      }
  }

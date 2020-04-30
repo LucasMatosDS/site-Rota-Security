@@ -14,7 +14,7 @@ $array = $cliDAO->buscarCliente();
 
       header("location: area_cliente.php");
       exit;
-   }   
+   }
 
  ?>
 
@@ -33,7 +33,7 @@ $array = $cliDAO->buscarCliente();
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <title>Rota</title>
 </head>
-<body class="animated fadeIn">
+<body class="animated fadeIn" id="cont" onchange="return AlteraConteudo()">
 
   <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -74,11 +74,13 @@ $array = $cliDAO->buscarCliente();
     }
    ?>
    <div class="container col-md-10" style="top: 100px;">
-   <fieldset class="fieldset-border" >
+   <fieldset class="fieldset-border">
      <legend class="legend-border">Controles</legend>
-       <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';"><img src='img/exit.png' class="mr-1">sair</button>
+       <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';" onchange="return AlteraConteudo()"><img src='img/exit.png' class="mr-1">sair</button>
        <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="return verificarExclusaoDeRegistros()"><img src='img/trash-all.png' class="mr-1">Excluir Registros</button>
        <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './backup.php';"><img src='img/backup.png' class="mr-1">Realizar Backup</button>
+        <button type="button" id="btn-backup" name="atualizar" class="btn mt-2 mb-2" onclick="window.location.href = './dados.php';"><img src='img/atualizar.svg' class="mr-1">Atualizar</button>
+        <button type="button" onclick="return AlteraConteudo()">verificar</button>
      </fieldset>
      <form name="filtrar-dados" method="post" style="float: left">
        <div class="row">
@@ -102,18 +104,18 @@ $array = $cliDAO->buscarCliente();
 
       if(isset($_POST['filtrar'])){
        $search = $_POST['txtfiltro'];
-       $filtro = $_POST['filtro'];         
+       $filtro = $_POST['filtro'];
 
-       $cliDAO = new ClienteDAO();      
+       $cliDAO = new ClienteDAO();
 
-       $array = $cliDAO->filtrar($filtro, $search);                         
+       $array = $cliDAO->filtrar($filtro, $search);
 
       //nova verificação depois da versão do PHP 7.2
        $verifica = (is_array($array) ? count($array) : 0);
         if ($verifica == 0) {
                 echo "<h4 style='margin-top: 100px;'><strong>Sua pesquisa não retornou nenhum Registro!</strong></h4>";
           return;
-    }                
+    }
    }
     ?>
 
@@ -125,25 +127,32 @@ $array = $cliDAO->buscarCliente();
       <th scope="col">Nome</th>
       <th scope="col">E-mail</th>
       <th scope="col">CPF</th>
-      <th scope="col">Data</th>      
+      <th scope="col">Arquivo</th>
       <th scope="col">Descrição</th>
-      <th scope="col">Documento</th>
+      <th scope="col">Data</th>
     </tr>
   </thead>
   <tbody>
 
-      <?php                
+      <?php
 
-          foreach($array as $cli){                    
+          foreach($array as $cli){
             echo "<tr>
-              <td align='center'><a href='dados.php' class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo'></a>
-              <a href='alterar_arquivo.php?id=$cli->id' class='btn btn-light border border-light text-dark btn-deletar'><img src='img/edite.png' title='Editar'></a>
-              <a href='dados.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></td>              
+            <ul>
+              <td align='center'><li class='m-2'><a href='download.php?id=$cli->id' class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo' download></a></li>
+              <li class='m-2'><a href='alterar_arquivo.php?id=$cli->id' class='btn btn-light border border-light text-dark btn-deletar'><img src='img/edite.png' title='Editar'></a></li>
+              <li class='m-2'><a href='dados.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></li></td>
               ";
               echo "<td>$cli->nome</td>";
               echo "<td>$cli->email</td>";
               echo "<td>$cli->cpf</td>";
-              echo "<td>$cli->data</td>";         
+              ?>
+              <td><iframe src="arquivos/<?php $cli->nome_arq['arq']; ?>"></iframe>
+
+              <?php
+              echo "<td>$cli->descricao</td>";
+              echo "<td>$cli->data</td>";
+              echo "</ul>";
             echo "</tr>";
          }
         }
@@ -151,15 +160,21 @@ $array = $cliDAO->buscarCliente();
    </tbody>
   </table>
  </div>
-</div>
-     <script type="text/javascript">
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+    setInterval(function(){
+          $('#recarregar').load('dados.php')
+      }, 1000);
+  });
 
     function verificarExclusaoPeloCPF(cpf){
 
         var decisao = confirm('Desejá Excluir o Registro ?');
 
           if(decisao == true){
-                alert('Registro excluido com sucesso!');
                 window.location.href = "excluir.php?cpf=" + cpf;
                 return true;
 
@@ -181,8 +196,61 @@ $array = $cliDAO->buscarCliente();
          return false;
       }
    }
+
+   // Fun��o que verifica se o navegador tem suporte AJAX
+   function AjaxF()
+   {
+   	var ajax;
+
+   	try
+   	{
+   		ajax = new XMLHttpRequest();
+   	}
+   	catch(e)
+   	{
+   		try
+   		{
+   			ajax = new ActiveXObject("Msxml2.XMLHTTP");
+   		}
+   		catch(e)
+   		{
+   			try
+   			{
+   				ajax = new ActiveXObject("Microsoft.XMLHTTP");
+   			}
+   			catch(e)
+   			{
+   				alert("Seu browser não suporta AJAX!");
+   				return false;
+   			}
+   		}
+   	}
+   	return ajax;
+   }
+
+   // função que faz as requisições AJAX ao PHP.
+   function AlteraConteudo(){
+
+   	var ajax = AjaxF();
+
+   	ajax.onreadystatechange = function(){
+   		if(ajax.readyState == 4)
+   		{
+   			document.getElementById('cont').innerHTML = ajax.responseText;
+   		}
+   	}
+
+   	// Vari�vel com os dados que ser�o enviados ao PHP
+   	//var dados = document.getElementById('recarregar').value;
+
+   	ajax.open("GET", "./dados.php", false);
+   	ajax.setRequestHeader("Content-Type", "text/html");
+   	ajax.send();
+   }
+
 </script>
 
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
