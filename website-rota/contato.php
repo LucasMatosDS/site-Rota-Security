@@ -24,12 +24,12 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Home
+          <a class="nav-link" href="index.php">Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Sobre</a>
+          <a class="nav-link" href="index.php">Sobre</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
@@ -43,8 +43,11 @@
 
   <div class="container cadastro mb-2">
     <div class="card-body">
+      <div align="center">
+      <img src="img/logo-rota.png">
+      </div>
       <div class="card-title">
-        <h3 id="titulo-email">Envio de E-mail:</h3>
+        <h3 id="titulo-email">Fale conosco:</h3>
         <hr>
         </div>
      <form action="./email.php" method="POST" name="dados" onsubmit="validarFormContato()">

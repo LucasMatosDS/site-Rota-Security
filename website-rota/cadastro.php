@@ -28,12 +28,12 @@ ob_start();
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Home
+          <a class="nav-link" href="index.php">Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Sobre</a>
+          <a class="nav-link" href="index.php">Sobre</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
@@ -59,7 +59,7 @@ ob_start();
      <form method="POST" action="cadastro.php" name="dadosCadastro">
        <div class="form-group col-md-8">
           <label>Nome Completo:</label>
-          <input type="text" class="form-control" name="nome" value='' autocomplete="off" placeholder="Informe seu Nome" required="true" onkeypress="return SomenteLetras(event)"/>
+          <input type="text" class="form-control" name="nome" value='' autocomplete="off" placeholder="Informe seu Nome" onkeypress="return SomenteLetras(event)" required="true"/>
        </div>
        <div class="form-group col-md-8">
           <label>E-mail:</label>
@@ -75,9 +75,9 @@ ob_start();
           </div>
           <div class="form-group col-md-8">
             <label>Repetir Senha:</label>
-            <input type="password" class="form-control mb-2" name="Rsenha" maxlength="8" autocomplete="off" placeholder="Confirmar Senha" required="true" />
+            <input type="password" class="form-control mb-2" name="Rsenha" maxlength="8" autocomplete="off" placeholder="Confirmar Senha" required="true"/>
           </div>
-        <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 button-form ml-3"  onclick="return validarCadastro()">Cadastrar</button>
+        <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 button-form ml-3">Cadastrar</button>
         <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2 button-form">
    Cancelar</button>
       </div>
@@ -112,10 +112,27 @@ ob_start();
 
 
           if(strlen($_POST['cpf']) < 14){
-                      exit;
 
-                    }else if(strlen($_POST['senha']) < 8){
-                      exit;
+          ?>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>CPF inválido!</strong><br>
+          <strong>CPF informado não contém 14 caracteres!</strong>
+        </div>
+
+          <?php
+
+             }else if(strlen($_POST['senha']) < 8){
+
+        ?>
+
+         <div class="alert alert-danger alert-dismissible" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>senha inválida!</strong><br>
+          <strong>Necessário informar uma senha com 8 caracteres!</strong>
+        </div>
+                      <?php
+
 
                     }else{
 
@@ -135,7 +152,6 @@ ob_start();
 
          if($senha == $Rsenha){
             $cliDAO->cadastrarCliente($cli);
-          //  $cliDAO->cadastrarArquivo();
 
              $cli->__destruct();
 
@@ -185,39 +201,17 @@ ob_start();
     }
 }
 
+
  function validarCadastro(){
 
-    var email = dadosCadastro.emailC.value;
-    var cpf = dadosCadastro.cpf.value;
     var senha = dadosCadastro.senha.value;
     var rsenha = dadosCadastro.Rsenha.value;
 
-    if(email === "" && cpf === "" && senha === "" && rsenha === ""){
-          alert('Necessário preencher os campos!')
-          return false;
-
-    }else if(email === ""){
-           alert('email invalído!')
-           return false;
-
-    }else if(cpf === "" || cpf.length < 14){
-           alert('CPF invalído!')
-           return false;
-
-    }else if(rsenha === ""){
-           alert('campo repetir senha invalído!')
-           return false;
-
-    }else if(senha == rsenha){
-            alert('senhas não compatíveis!')
-            return false;
-
-     }else if(senha.length && rsenha.length < 8){
+ if(senha.length && rsenha.length < 8){
           alert('senha invalída!')
           alert('senha muito pequena, \n insira até 8 dígitos!')
             return false;
      }else{
-          alert('erro')
  }
 }
   </script>

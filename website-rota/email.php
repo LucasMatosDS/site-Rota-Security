@@ -24,7 +24,7 @@ $body = "Nome:  ".$nome. "\r\n".
         "Email: ".$email. "\r\n".
         "Mensagem:\r\n".$mensagem;
 
-$header = "From:lucasmatoss2000@gmail.com"."\r\n".
+$header = "From:rotasecurity@gmail.com"."\r\n".
           "Replay-To:".$email."\r\n".
           "X=Mailer:PHP/".phpversion();
 

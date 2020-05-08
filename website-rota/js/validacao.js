@@ -32,41 +32,41 @@
       return true;
 }
 
-//  function validarCadastro(){
+ function validarCadastro(){
 
-//     var email = dadosCadastro.emailC.value;
-//     var cpf = dadosCadastro.cpf.value;
-//     var senha = dadosCadastro.senha.value;
-//     var rsenha = dadosCadastro.Rsenha.value;
+    var email = dadosCadastro.emailC.value;
+    var cpf = dadosCadastro.cpf.value;
+    var senha = dadosCadastro.senha.value;
+    var rsenha = dadosCadastro.Rsenha.value;
 
-//     if(email === "" && cpf === "" && senha === "" && rsenha === ""){
-//           alert('Necessário preencher os campos!')
-//           return false;
+    if(email === "" && cpf === "" && senha === "" && rsenha === ""){
+          alert('Necessário preencher os campos!')
+          return false;
 
-//     }else if(email === ""){
-//            alert('email invalído!')
-//            return false;
+    }else if(email === ""){
+           alert('email invalído!')
+           return false;
 
-//     }else if(cpf === "" || cpf.length < 14){
-//            alert('CPF invalído!')
-//            return false;
+    }else if(cpf === "" || cpf.length < 14){
+           alert('CPF invalído!')
+           return false;
 
-//     }else if(rsenha === ""){
-//            alert('campo repetir senha invalído!')
-//            return false;
+    }else if(rsenha === ""){
+           alert('campo repetir senha invalído!')
+           return false;
 
-//     }else if(senha == rsenha){
-//             alert('senhas não compatíveis!')
-//             return false;
+    }else if(senha == rsenha){
+            alert('senhas não compatíveis!')
+            return false;
 
-//      }else if(senha.length && rsenha.length < 8){
-//           alert('senha invalída!')
-//           alert('senha muito pequena, \n insira até 8 dígitos!')
-//             return false;
-//      }else{
-//           alert('erro')
-//  }
-// }
+     }else if(senha.length && rsenha.length < 8){
+          alert('senha invalída!')
+          alert('senha muito pequena, \n insira até 8 dígitos!')
+            return false;
+ }else{
+   alert('erro')
+ }
+}
 
     function recuperarSenha(){
 
@@ -77,7 +77,7 @@
         if(email === "" && senha === "" && senha_c === ""){
           alert('Necessário preencher os campos!')
           return false;
-        
+
         }
 
     }

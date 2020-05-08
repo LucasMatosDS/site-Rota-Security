@@ -55,7 +55,7 @@ class BackupDatabase
 
         // Gerando nome único para o arquivo
         date_default_timezone_set('America/Sao_Paulo');
-        $fileName = 'ROTA-BACKUP-'. date('d-m-y H:i:s') . '.sql.zip';
+        $fileName = 'ROTA-BACKUP-'. date('d-m-y H:i:s').'.sql';
         $filePath = $this->backupFolder . '/' . $fileName;
 for($i = 0; $i <= 10; $i++){
         // Definindo informações para geração do backup
@@ -112,7 +112,7 @@ for($i = 0; $i <= 10; $i++){
             if ($numberFiles > $this->maxNumberFiles) {
                 // Removemos o arquivo da pasta
                 unlink($file);
-                echo "<div align='center'><p style='color: red;font-size: 25px;'>Apagando backup: '{$file}'</p></div>" . PHP_EOL;
+                echo "<div align='center'><p style='color: red;font-size: 25px; align='center'>Apagado backup: '{$file}'</p></div>" . PHP_EOL;
             }
         }
 

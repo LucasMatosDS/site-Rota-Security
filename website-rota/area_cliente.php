@@ -1,6 +1,6 @@
 <?php
  include_once 'dao/clienteDAO.class.php';
- $cliDAO = new clienteDAO();
+ $cliDAO = new clienteDAO;
  $cliDAO->cadastrarAdministradores();
  ?>
 <!DOCTYPE html>
@@ -29,12 +29,12 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Home
+          <a class="nav-link" href="index.php">Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Sobre</a>
+          <a class="nav-link" href="index.php">Sobre</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
@@ -88,22 +88,42 @@
 
       				if($cliDAO->logar($cpf,$senha)){
 
+              }else if(strlen($_POST['cpf']) < 14){
 
-      			}else if(strlen($senha) < 8){
+                ?>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                       <strong>CPF informado não contém 14 caracteres!</strong>
+                </div>
+                <?php
 
+    			    }else if(strlen($senha) < 8){
 
-               }else{
+                 ?>
+                 <div class="alert alert-danger alert-dismissible" role="alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>senha não comtém 8 caracteres!</strong>
+                 </div>
+                 <?php
 
-      				?>
+            }else{
 
-      		<div class="alert alert-danger alert-dismissible" role="alert">
+              ?>
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                     <strong>CPF e/ou senha estão incorretos!</strong>
+              </div>
+              <?php
+      }
+      			}else{
+
+               ?>
+          <div class="alert alert-danger alert-dismissible" role="alert">
              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                 <strong>CPF e/ou senha estão incorretos!</strong>
+                 <strong>Necessário preencher os campos!</strong>
           </div>
-
-      <?php
-              }
-      			}
+               <?php
+            }
 
 
       		}else{
@@ -123,22 +143,6 @@
   $(document).ready(function(){
     $("#cpf").mask("000.000.000-00", {reverse: true});
   })
-
-  function validarLogin(){
-
-    var cpf = dadosLogin.cpf.value;
-    var senha = dadosLogin.senha.value;
-
-    if(cpf === "" && senha === ""){
-          alert('Necessário preencher os campos!')
-          return false;
-
-     }else{
-
-     return true;
-
-   }
- }
 
  // Check javascript has loaded
 $(document).ready(function(){

@@ -32,15 +32,15 @@ class ClienteDAO{
 
       $statement = $this->conexao->query("select id from clientes where cpf = '000.000.000-00'");
       $statement = $this->conexao->query("select id from clientes where cpf = '111.111.111-11'");
-    
-        if($statement->rowCount() > 0){                               
-    
+
+        if($statement->rowCount() > 0){
+
             return true;
 
         }else{
-            
+
            $statement = $this->conexao->query("alter table clientes auto_increment = 1");
-           
+
            $statement = $this->conexao->query("insert into clientes(nome,email,cpf,senha,senha_decript,arquivo,descricao,data)
       values('administrador', 'rotasecurity@gmail.com', '000.000.000-00', MD5('00000000'), '00000000', '','-','-'),
             ('tecnico', 'tecnico@gmail.com', '111.111.111-11', MD5(11111111), '11111111', '','-','-')");
@@ -49,11 +49,11 @@ class ClienteDAO{
    }
   }
 
-  public function cadastrarCliente($cli){      
+  public function cadastrarCliente($cli){
 
       try {
 
-          $cli->data = date('d/m/yy');        
+          $cli->data = date('d/m/yy');
 
         $statement = $this->conexao->prepare(
           "insert into clientes(nome,email,cpf,senha,senha_decript,data,arquivo,descricao)
@@ -68,18 +68,31 @@ class ClienteDAO{
         $statement->bindValue(6, $cli->data);
         $statement->bindValue(7, 'Arquivo indisponível!');
         $statement->bindValue(8, 'descrição indisponível!');
-        $statement->execute();        
+        $statement->execute();
 
       } catch (PDOException $e) {
         echo "Erro: ao Cadastrar Clientes!" .$e;
       }
-   }  
-   
+   }
+
+   public function cadastrarImagem($img){
+
+      try {
+
+         $statement = $this->conexao->prepare("insert into imagens(imagem) VALUES(?)");
+         $statement->bindValue(1, $img->imagem);
+         $statement->execute();
+
+      } catch (PDOException $e) {
+          echo "Erro: ao Cadastrar Imagem!".$e;
+      }
+   }
+
    public function buscarCliente(){
 
      try{
 
-       $statement = $this->conexao->query("select * from clientes where id != 1 and id != 2 order by nome;");       
+       $statement = $this->conexao->query("select * from clientes where id != 1 and id != 2 order by nome;");
 
        $array = $statement->fetchAll(PDO::FETCH_CLASS,"Cliente");
        return $array;
@@ -89,22 +102,57 @@ class ClienteDAO{
      }
    }
 
-   public function buscarArquivo($id){
+   public function buscarImagem(){
 
       try{
 
-       $statement = $this->conexao->prepare('select arquivo as arq from clientes where id = :id and id != 1 && id != 2');    
+         $statement = $this->conexao->query("select imagem as foto from imagens");
 
-        // $statement = $this->conexao->prepare('select *,(select arquivo from clientes where id = :id) as arq from clientes');
+         if($statement->rowCount() > 0){
+
+    			 		$dados = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    		 }else{
+
+    			 	  $dados = array();
+    		 }
+
+    		  return $dados;
+
+      }catch(PDOException $e){
+         echo "Erro: ao buscar Imagens!".$e;
+      }
+   }
+
+   public function buscarArquivo($id){
+
+      try{
+       
+       $statement = $this->conexao->prepare('select arquivo as arq from clientes where id = :id and id != 1 && id != 2');
+
         $statement->bindValue(":id", $id);
-        $statement->execute();       
-        $array = $statement->fetchAll(PDO::FETCH_CLASS, "Cliente");     
+        $statement->execute();
+        $array = $statement->fetchAll(PDO::FETCH_CLASS, "Cliente");
         return $array;
 
       }catch(PDOException $e){
          echo "Erro: ao buscar Arquivo!". $e;
-
       }
+  }
+
+  public function buscarDadosCliente($id){
+
+        try{
+
+          $statement = $this->conexao->prepare('select * from clientes where id = :id');
+          $statement->bindValue(":id", $id);
+          $statement->execute();
+          $array = $statement->fetchAll(PDO::FETCH_CLASS, "Cliente");
+          return $array;
+
+        }catch(PDOException $e){
+          echo "Erro: ao buscar dados do cliente!". $e;
+        }
   }
 
    public function deletarCliente($cpf){
@@ -114,13 +162,28 @@ class ClienteDAO{
        $statement = $this->conexao->prepare(
          "delete from clientes where cpf = :c");
 
-       $statement->bindValue(':c', $cpf);
+       $statement->bindValue(":c", $cpf);
        $statement->execute();
 
      }catch(PDOException $e){
        echo "Erro: ao excluir cliente! ".$e;
   }
 }
+
+  public function deletarImagem($imagem){
+
+       try{
+
+          $statement = $this->conexao->prepare(
+            "delete from imagens where imagem = :f");
+
+            $statement->bindValue(":f", $imagem);
+            $statement->execute();
+
+       }catch(PDOException $e){
+          echo "Erro: ao excluir imagem! ".$e;
+       }
+  }
 
 public function deletarTodosOsRegistros(){
 
@@ -140,6 +203,8 @@ public function deletarTodosOsRegistros(){
 
           $statement = $this->conexao->prepare(
            "alter table clientes auto_increment = 1;");
+          $statement = $this->conexao->prepare(
+           "alter table imagens auto_increment = 1;");
           $statement->execute();
 
         }catch(PDOException $e){
@@ -153,23 +218,22 @@ public function deletarTodosOsRegistros(){
 
     		//verifica se o email e senha estão cadastrados.
     		 $statement = $pdo->prepare("select id from clientes where cpf = :c and senha = :s");
-          
+
     		$statement->bindValue(":c", $cpf);
     		$statement->bindValue(":s", md5($senha));
     		$statement->execute();
 
-         if($cpf == '000.000.000-00' && $senha == '00000000' || $cpf == '111.111.111-11' && $senha == '11111111'){
-
-                      header("location: dados.php");
-
-                }else{
-
-                  header("location: area_privada.php");
-
-                    }
-
     		if($statement->rowCount() > 0){
 
+
+         if($cpf == '000.000.000-00' && $senha == '00000000' || $cpf == '111.111.111-11' && $senha == '11111111'){
+
+                  header("location: dados.php");
+
+         }else{
+
+                  header("location: area_privada.php");
+        }
     			//sessão para entrar no sistema.
 
     			//transformando os dados vindo do banco de dados em um array.
@@ -201,11 +265,10 @@ public function deletarTodosOsRegistros(){
 
       public function validarDados($cli){
 
-          $statement = $this->conexao->prepare("select id from clientes where cpf = :c or email = :e or senha_decript = :s");
-        
+          $statement = $this->conexao->prepare("select id from clientes where cpf = :c or email = :e");
+
           $statement->bindValue(":c", $cli->cpf);
           $statement->bindValue(":e", $cli->email);
-          $statement->bindValue(":s", $cli->senha);
           $statement->execute();
 
           if($statement->rowCount() > 0){
@@ -225,27 +288,27 @@ public function deletarTodosOsRegistros(){
         $statement = $pdo->prepare("select senha from clientes where email = :e and id != 1 and id != 2");
         $statement = $pdo->prepare("update clientes set senha = :s where email = :e and id != 1 and id != 2");
 
-        $statement->bindValue(":e", $email); 
-        $statement->bindValue(":s", md5($senha));                 
-        $statement->execute();       
+        $statement->bindValue(":e", $email);
+        $statement->bindValue(":s", md5($senha));
+        $statement->execute();
 
         if($statement->rowCount() > 0){
 
           $dado = $statement->fetch();
-          
+
           return true;
 
         }else{
 
           return false;
-        }               
+        }
       }
 
       public function geraSenha($tamanho = 8, $maiusculas = true, $numeros = true){
           // Caracteres de cada tipo
           $letraMi = 'abcdefghijklmnopqrstuvwxyz';
           $letraMa = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-          $numero = '1234567890';         
+          $numero = '1234567890';
           // Variáveis internas
           $retorno = '';
           $caracteres = '';
@@ -272,14 +335,14 @@ public function deletarTodosOsRegistros(){
             case "nome": $query = "where nome like '%".$search."%'";
             break;
             case "cpf": $query = "where cpf like '%".$search."%'";
-            break;            
+            break;
           }
-          
+
           if(empty($search)){
-            $query = "";    
-                  
-          }else if($search == "administrador" || $search == "tecnico"){  
-              $query = "";                  
+            $query = "";
+
+          }else if($search == "administrador" || $search == "tecnico"){
+              $query = "";
               return;
           }
 
@@ -293,44 +356,36 @@ public function deletarTodosOsRegistros(){
         }
       }
 
-      // public function filtrarArquivos($filtro, $search){
-      //   try {
-      //     $query = "";
-      //     switch ($filtro) {
-      //       case "codigo": $query = "where id_arq like '%".$search."%'";
-      //       break;
-      //       case "arquivo": $query = "where arquivo like '%".$search."%'";
-      //       break;            
-      //       case "descricao": $query = "where descricao like '%".$search."%'";
-      //       break;
-      //     }
-      //     if(empty($search)){
-      //       $query = "";
-      //     }
-      //     $statement = $this->conexao->query("select * from arquivos ".$query);
-      //     $array = $statement->fetchAll(PDO::FETCH_CLASS, "Arquivo");
-      //     return $array;
-
-      //   } catch (PDOException $e) {
-      //     echo "Erro: ao filtrar! ".$e;
-
-      //   }
-      // }
-
       public function alterar($cli){
 
               try{
 
                 $statement = $this->conexao->prepare("update clientes set arquivo = :n, descricao = :d where id = :id");
-               
+
                 $statement->bindValue(":id", $cli->id);
                 $statement->bindValue(":n",  $cli->nome_arq);
-                $statement->bindValue(":d",  $cli->descricao);               
+                $statement->bindValue(":d",  $cli->descricao);
                 $statement->execute();
 
 
               }catch(PDOException $e){
                    echo "Erro: ao mover arquivo!". $e;
+              }
+      }
+
+      public function alterarImagem($img,$imagem){
+
+              try{
+
+                $statement = $this->conexao->prepare("update imagens set imagem = :i where imagem = :img");
+
+                $statement->bindValue(":img", $imagem);
+                $statement->bindValue(":i", $img->imagem);
+                $statement->execute();
+
+
+              }catch(PDOException $e){
+                   echo "Erro: ao mover imagem!". $e;
               }
       }
 

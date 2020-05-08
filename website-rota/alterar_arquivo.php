@@ -1,15 +1,15 @@
 <?php
 session_start();
 ob_start();
-  
- if(isset($_GET['id'])){        
-        
+
+ if(isset($_GET['id'])){
+
       include_once 'model/cliente.class.php';
       include_once 'dao/clienteDAO.class.php';
 
       $cliDAO = new ClienteDAO();
 
-          $array = $cliDAO->filtrar('id', $_GET['id']);          
+          $array = $cliDAO->filtrar('id', $_GET['id']);
 
           $cli = $array[0];
  }
@@ -68,15 +68,15 @@ ob_start();
           </li>
           <hr>
         </div>
-     <form method="POST" action="" name="dadosArquivo" enctype="multipart/form-data">       
+     <form method="POST" action="" name="dadosArquivo" enctype="multipart/form-data">
        <div class="form-group col-md-8">
           <label>Descrição do Arquivo:</label>
           <textarea type="text" class="form-control"  id="descricao" name="descricao" autocomplete="off" required="true" placeholder="Informe a descrição do Arquivo..." maxlength="200"></textarea>
-       </div>  
+       </div>
        <div class="form-group col-md-8">
-           <label>Selecione o Arquivo:</label>           
-           <input type="file" name="arq" id="arquivo" accept=".png,.jpg,.mp4,.pdf,.doc,.docx" required="true">                      
-          </div>    
+           <label>Selecione o Arquivo:</label>
+           <input type="file" name="arq" id="arquivo" accept=".pdf,.doc,.docx" required="true">
+          </div>
         <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 button-form ml-3">Cadastrar</button>
         <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2 button-form">
    Cancelar</button>
@@ -95,24 +95,22 @@ ob_start();
  <?php
 
     if(isset($_POST['cadastrar'])){
-                          
+
           include_once 'model/cliente.class.php';
           include_once 'dao/clienteDAO.class.php';
 
           $cli->id = $_GET['id'];
-          $cli->descricao = addslashes($_POST['descricao']);         
-
+          $cli->descricao = addslashes($_POST['descricao']);
 
           $fotos = array();
 
-        if(isset($_FILES['arq'])){               
+        if(isset($_FILES['arq'])){
               //salvando dentro da pasta img.
              $cli->nome_arq = md5(uniqid($_FILES['arq']['name']));
                 move_uploaded_file($_FILES['arq']['tmp_name'], 'arquivos/'.$cli->nome_arq);
-                //echo "<p>movendo...".$_FILES['arq']['name']."</p>";
 
                  if(!empty($_FILES['arq']['name'])){
-                     
+
                     ?>
 
                 <div class="alert alert-success alert-dismissible" role="alert">
@@ -121,20 +119,17 @@ ob_start();
                 </div>
 
                     <?php
-                 
-                 }else{ 
-
                  }
 
                 //salvar nomes para enviar para o banco.
 
                 //inserindo dentro da variavel fotos o nome da imagem.
-                array_push($fotos, $cli->nome_arq);                      
-           
-            $cliDAO = new ClienteDAO();
-            $cliDAO->alterar($cli);           
+                array_push($fotos, $cli->nome_arq);
 
-             $cli->__destruct();                             
+            $cliDAO = new ClienteDAO();
+            $cliDAO->alterar($cli);
+
+             $cli->__destruct();
   }
 }
 
@@ -151,11 +146,11 @@ ob_start();
   function baixarMidia(){
     var img =  confirm('voce desejá fazer o donwload do arquivo ?');
 
-     if(img == true){                 
-     $('a#download').attr({target: '_blank', 
-                    href  : 'img/<?php echo $arq->nome_arq['foto_capa'];?>'});                         
-                    
-          
+     if(img == true){
+     $('a#download').attr({target: '_blank',
+                    href  : 'img/<?php echo $arq->nome_arq['foto_capa'];?>'});
+
+
      }else if(img != true){
 
      }

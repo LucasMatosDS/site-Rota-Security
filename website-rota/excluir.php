@@ -8,4 +8,11 @@ include_once 'dao/clienteDAO.class.php';
          header('location: dados.php');
    }
 
+   if(isset($_GET['imagem'])){
+       $cliDAO = new ClienteDAO();
+       $cliDAO->deletarImagem($_GET['imagem']);
+       $cliDAO->reiniciarId();
+       header('location: gerenciar_imagens.php');
+   }
+
  ?>

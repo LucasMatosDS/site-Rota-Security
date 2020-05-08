@@ -14,9 +14,9 @@ html,body {
   scroll-behavior: smooth; /* effect scroll */
 }
 
-.subtitulo{  
+.subtitulo{
   text-decoration: underline;
-  text-decoration-color: black;  
+  text-decoration-color: black;
 }
 
 .navbar{
@@ -172,6 +172,32 @@ li{
   width: 98%;
 }
 
+#imagens{
+  width: 30%;
+  height: 220px;
+  border-color: black!important;
+  box-shadow: 2px 2px 2px 2px gray;
+  cursor: pointer;
+  display: inline-block;
+  margin: 4px;
+  margin-left: 20px;
+}
+
+#imagem2{
+  width: 30%;
+  border-color: black!important;
+  box-shadow: 2px 2px 2px 2px gray;
+  display: inline-block;
+  margin: 4px;
+}
+
+#imagem3{
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100px;
+}
+
 .conteudo{
   text-align: justify;
 }
@@ -244,6 +270,12 @@ textarea{
   margin-bottom: 15px;
 }
 
+#editar_img{
+  margin-top: 110px;
+  width: 60%;
+  margin-bottom: 15px;
+}
+
 #cad{
   color: black;
   text-decoration: none;
@@ -293,6 +325,15 @@ textarea{
   height: 150px;
 }
 
+.deletar{
+  color: white!important;
+}
+
+.deletar:hover{
+  background-color: white;
+  color: black!important;
+}
+
 /* media queries */
 @media screen and (max-width:720px) and (min-width:320px){
 
@@ -335,6 +376,11 @@ textarea{
     width: 94%!important;
   }
 
+  #editar_img{
+    margin-top: 110px;
+    width: 94%!important;
+  }
+
   #img-login{
     margin-left: 2%;
     text-align: center;
@@ -356,9 +402,17 @@ textarea{
     padding-top: 0px;
     margin: 0 0 1.0em 0 !important;
     padding-left: 20px!important;
-    width: auto;
+    width: 82%;
     -webkit-box-shadow: 0px 0px 0px 0px #000;
     box-shadow: 0px 0px 0px 0px #000;
+  }
+
+#pesquisa_dados{
+    width: 60%;
+  }
+
+#filtro_pesquisa{
+    width: 40%;
   }
 
   #pesquisa{
@@ -371,17 +425,39 @@ textarea{
       margin-bottom: 16px;
   }
 
-  #arrow-left{     
-     float: left;     
+  #arrow-left{
+     float: left;
   }
 
   .logo-login{
-    margin-top: 40px;     
+    margin-top: 40px;
     margin-right: 20px;
   }
 
   #logo{
-      margin-right: 20px;  
+      margin-right: 20px;
+  }
+
+  #imagens{
+    width: 100%;
+    margin-bottom: 20px!important;
+    display: block;
+    margin: auto;
+    transform: none!important;
+  }
+
+  #imagem2{
+    width: 100%;
+    margin-bottom: 20px!important;
+    display: block;
+    margin: auto;
+    transform: none!important;
+  }
+
+  #imagem3{
+    width: 100%;
+    height: 200px;
+
   }
 
 }

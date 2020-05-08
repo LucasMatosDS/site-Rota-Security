@@ -2,26 +2,28 @@
 
  include_once 'dao/clienteDAO.class.php';
  include_once 'model/cliente.class.php';
-		
+
 	 $cliDAO = new ClienteDAO();
 	 $cli = new cliente();
 
 if(isset($_GET['id']) && !empty($_GET['id'])){
-	
-     $id = addslashes($_GET['id']);	 	 
+
+   $id = $_GET['id'];
 	 $array = $cliDAO->buscarArquivo($id);
-	 $local = "arquivos/84159455b762b9e42e694b2d33e60b34";
+   $array = $cliDAO->buscarDadosCliente($id);
+	 $local = "arquivos".$cli->nome_arq;
+
 	 readfile($local);
 	 if($local = fopen($local, 'r') && $local = fopen($local, 'w')){
 	 	echo "tem acesso!<br>";
 	 	echo "pode editar!";
 	 }else{
-	 	echo "erro";
+	 	echo "Erro: você não tem permissão para editar o arquivo!";
 	 }
 
 	foreach($array as $cli){
 
-		?>			
+		?>
 
 	 <!DOCTYPE html>
 	 <html>
@@ -38,22 +40,21 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
 	 	<title>Rota</title>
 	 </head>
 	 <body>
-
-	 	<p><?php echo $cli;?></p>
-	 	<img src="arquivos/<?php echo $cli->nome_arq['arq'];?>">
+     <strong><?php echo $cli-> __toString();?></strong>
+	 	<iframe src="arquivos/<?php echo $cli->nome_arq['arq'];?>" width="300px" height="300px"></iframe>
 		<a class="btn btn-primary" id="download" onclick="baixarImagem()" download>Download</a>
-	 
+
 	 <script type="text/javascript">
-	
+
 	function baixarImagem(){
 		var img =  confirm('voce desejá fazer o donwload do arquivo ?');
 
-		 if(img == true){		 			 			 	
-		 $('a#download').attr({target: '_blank', 
+		 if(img == true){
+		 $('a#download').attr({target: '_blank',
                     href  : 'arquivos/<?php echo $cli->nome_arq['arq'];?>'});
-                    window.location.href = 'download.php';                    		 
-                    
-    			
+                    // window.location.href = 'download.php';
+
+
 		 }else if(img != true){
 
 		 }
@@ -68,9 +69,9 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
   <script src="js/bootstrap.bundle.min.js"></script>
 
 	 </body>
-	 </html>	 
+	 </html>
 
-	  	<?php	
+	  	<?php
 	}
 
 }else{

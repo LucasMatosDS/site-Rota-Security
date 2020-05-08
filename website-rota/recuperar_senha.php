@@ -29,12 +29,12 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Home
+          <a class="nav-link" href="index.php">Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Sobre</a>
+          <a class="nav-link" href="index.php">Sobre</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
@@ -46,8 +46,8 @@
     </div>
   </nav>
 
-  <div id="cadastre_se" class="container texto cadastro">   
-    <div class="card-body">     
+  <div id="cadastre_se" class="container texto cadastro">
+    <div class="card-body">
         <a href="area_cliente.php" id="arrow-left" title="voltar"><img src="img/arrow-left.png"></a>
       <div class="card-title logo-login">
         <div align="center" id="logo">
@@ -57,48 +57,36 @@
           </li>
           <hr>
         </div>
-     <form  name="recuperarDados" action="recuperar_senha.php" method="POST" onsubmit="recuperarSenha()">
+     <form  name="recuperarDados" action="recuperar_senha.php" method="POST">
        <div class="form-group col-md-8">
           <label>E-mail:</label>
-          <input type="email" name="email" class="form-control redefinir" autocomplete="off" placeholder="Informe seu E-mail" />          
+          <input type="email" name="email" class="form-control redefinir" autocomplete="off" placeholder="Informe seu E-mail" />
           <!-- <label>nova senha:</label> -->
-          <input type="hidden" name="senha" class="form-control redefinir" maxlength="8" autocomplete="off" placeholder="Insira sua nova senha"> 
+          <input type="hidden" name="senha" class="form-control redefinir" maxlength="8" autocomplete="off" placeholder="Insira sua nova senha">
           <!-- <label>confirmar senha:</label>        -->
-          <input type="hidden" name="senha_c" class="form-control redefinir" maxlength="8" autocomplete="off" placeholder="confirme sua senha">  
-       </div>      
+          <input type="hidden" name="senha_c" class="form-control redefinir" maxlength="8" autocomplete="off" placeholder="confirme sua senha">
+       </div>
         <button id="btn-enviar" type="submit" name="entrar" class="btn mr-2 button-form ml-3">Recuperar
-       </button>        
+       </button>
       </div>
         <?php
 
         if(isset($_POST['email'])){
 
         $email = addslashes($_POST['email']);
-        // $senha = addslashes($_POST['senha']);
-        // $senha_c = addslashes($_POST['senha_c']);        
+          if(!empty($email)){
         $senha = $cliDAO->geraSenha(8, true, true);
                 $cliDAO->conectar("rota", "localhost", "root", "");
 
-                // if($senha != $senha_c){
-
-                  ?>
-                  
-                <!--   <div class="alert alert-danger" role="alert">senhas incompatíveis!</div> -->
-
-                  <?php
-                   // exit;
-
-                // }else{
-
 
                 if($cliDAO->recuperarSenha($email, $senha)){
-                  
+
                   ?>
-                  
+
           <div class="alert alert-info alert-dismissible" role="alert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <?php echo "sua nova senha é: "."<strong>".$senha; "</strong>"?>
-          </div>                  
+          </div>
 
                 <?php
 
@@ -108,15 +96,23 @@
 
                 <div class="alert alert-danger alert-dismissible" role="alert">
                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        E-mail incorreto, tente novamente!
+                        <strong>E-mail incorreto, tente novamente!</strong>
                 </div>
 
                   <?php
                 }
-              //}
+              }else{
+
+                ?>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                       <strong>Necessário preencher os campos!</strong>
+                </div>
+                <?php
+              }
               }
            ?>
-     </form>       
+     </form>
     </div>
 
   <script src="js/jquery.slim.min.js"></script>

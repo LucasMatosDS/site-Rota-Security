@@ -3,9 +3,7 @@ session_start();
 ob_start();
 
 include_once  'dao/clienteDAO.class.php';
-include_once  'model/arquivo.class.php';
 include_once  'model/cliente.class.php';
-include_once  'excluir.php';
 
 $cliDAO = new ClienteDAO();
 $array = $cliDAO->buscarCliente();
@@ -33,7 +31,7 @@ $array = $cliDAO->buscarCliente();
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <title>Rota</title>
 </head>
-<body class="animated fadeIn" id="cont" onchange="return AlteraConteudo()">
+<body class="animated fadeIn" id="cont">
 
   <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -44,12 +42,12 @@ $array = $cliDAO->buscarCliente();
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Home
+            <a class="nav-link" href="index.php">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Sobre</a>
+            <a class="nav-link" href="index.php">Sobre</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
@@ -64,11 +62,20 @@ $array = $cliDAO->buscarCliente();
   <?php
       if(isset($array)){
           if(count($array) == 0){
-                echo "<div class='col-md-12' style='top: 85px;'>
-                <h3 align='center' class='alert mt-3' role='alert' style='background: black; color: white;'>Não há registro cadastrado no sistema!
-                <a href='index.html' style='color: red;'>Voltar a Página Inicial</a>
-                </h3>
-                </div>";
+            ?>
+
+            <div class='col-md-12' style='top: 85px;'>
+              <h3 align='center' class='alert mt-3' role='alert' style='background: black; color: white;'>Não há registro cadastrado no sistema!
+              <a href='index.php' style='color: red;'>Voltar a Página Inicial</a>
+              </h3>
+              <fieldset class="fieldset-border col-md-2">
+                <legend class="legend-border">Controles</legend>
+                  <button type="button" id="btn-backup" name="inserir_img" class="ml-4 btn mt-2 mb-2" onclick="window.location.href = './inserir_imagem.php';"><img src='img/upload_img.png' class="mr-1">Inserir imagens</button>
+                  <button type="button" id="btn-backup" class="ml-4 btn mt-2 mb-2" onclick="window.location.href = './gerenciar_imagens.php';"><img src='img/edit_img.png' class="mr-1">Editar imagens</button>
+                </fieldset>
+              </div>
+
+                <?php
                 unset($_SESSION['id']);
                 return;
     }
@@ -76,18 +83,21 @@ $array = $cliDAO->buscarCliente();
    <div class="container col-md-10" style="top: 100px;">
    <fieldset class="fieldset-border">
      <legend class="legend-border">Controles</legend>
-       <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';" onchange="return AlteraConteudo()"><img src='img/exit.png' class="mr-1">sair</button>
+       <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';"><img src='img/exit.png' class="mr-1">sair</button>
        <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="return verificarExclusaoDeRegistros()"><img src='img/trash-all.png' class="mr-1">Excluir Registros</button>
        <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './backup.php';"><img src='img/backup.png' class="mr-1">Realizar Backup</button>
-        <button type="button" id="btn-backup" name="atualizar" class="btn mt-2 mb-2" onclick="window.location.href = './dados.php';"><img src='img/atualizar.svg' class="mr-1">Atualizar</button>
-        <button type="button" onclick="return AlteraConteudo()">verificar</button>
+       <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './restore.php';"><img src='img/backup_restore.png' class="mr-1">Restaurar Backup</button>
+       <button type="button" id="btn-backup" name="inserir_img" class="btn mt-2 mb-2" onclick="window.location.href = './inserir_imagem.php';"><img src='img/upload_img.png' class="mr-1">Inserir imagens</button>
+       <button type="button" id="btn-backup" class="btn mt-2 mb-2" onclick="window.location.href = './gerenciar_imagens.php';"><img src='img/edit_img.png' class="mr-1">Gerenciar imagens</button>
+       <button type="button" id="btn-backup" name="atualizar" class="btn mt-2 mb-2" onclick="window.location.href = './dados.php';"><img src='img/atualizar.svg' class="mr-1">Atualizar</button>
+      <button type="button" onclick="return AlteraConteudo()">verificar</button>
      </fieldset>
      <form name="filtrar-dados" method="post" style="float: left">
-       <div class="row">
-         <div class="form-group col-md-6">
+      <div class="row">
+         <div class="form-group col-md-6" id="pesquisa_dados">
            <input type="text" name="txtfiltro" class="form-control" placeholder="pesquisar..." autocomplete="off" required="true">
          </div>
-         <div class="form-group col-md-4">
+         <div class="form-group col-md-4" id="filtro_pesquisa">
            <select name="filtro" class="form-control">
              <option value="nome">Nome</option>
              <option value="cpf">CPF</option>
@@ -119,7 +129,11 @@ $array = $cliDAO->buscarCliente();
    }
     ?>
 
-  <div class="table-responsive-md">
+  <div class="table-responsive-md" id="recarregar" onchange=" $(document).ready(function(){
+        setInterval(function(){
+            $('#recarregar').load('./dados.php')
+        }, 1000);
+    });">
       <table id="tabela" class="table table-dark table-bordered table-hover table-condensed">
         <thead align="center">
     <tr>
@@ -137,19 +151,21 @@ $array = $cliDAO->buscarCliente();
       <?php
 
           foreach($array as $cli){
+
+            ?>
+
+            <?php
             echo "<tr>
             <ul>
-              <td align='center'><li class='m-2'><a href='download.php?id=$cli->id' class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo' download></a></li>
+              <td align='center'><li class='m-2'><a href='download.php?id=$cli->id' class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo'></a></li>
+              <li class='m-2'><a href='down.php?id=$cli->id' class='btn border border-light text-dark' style='background: silver'>teste download</a></li>
               <li class='m-2'><a href='alterar_arquivo.php?id=$cli->id' class='btn btn-light border border-light text-dark btn-deletar'><img src='img/edite.png' title='Editar'></a></li>
-              <li class='m-2'><a href='dados.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></li></td>
+              <li class='m-2'><a href='excluir.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></li></td>
               ";
               echo "<td>$cli->nome</td>";
               echo "<td>$cli->email</td>";
               echo "<td>$cli->cpf</td>";
-              ?>
-              <td><iframe src="arquivos/<?php $cli->nome_arq['arq']; ?>"></iframe>
-
-              <?php
+              echo "<td><img src='img/document.svg'></td>";
               echo "<td>$cli->descricao</td>";
               echo "<td>$cli->data</td>";
               echo "</ul>";
@@ -159,9 +175,9 @@ $array = $cliDAO->buscarCliente();
        ?>
    </tbody>
   </table>
+  </div>
  </div>
-
-<script type="text/javascript">
+     <script type="text/javascript">
 
 $(document).ready(function(){
 
@@ -175,10 +191,12 @@ $(document).ready(function(){
         var decisao = confirm('Desejá Excluir o Registro ?');
 
           if(decisao == true){
+                alert('Registro excluido com sucesso!');
                 window.location.href = "excluir.php?cpf=" + cpf;
                 return true;
 
               }else{
+                console.log(decisao)
                   return false;
               }
     }
@@ -189,7 +207,7 @@ $(document).ready(function(){
 
      if(decisao1 == true){
          alert('Registros excluidos com sucesso!');
-         window.location.href = "excluir-registros.php";
+         window.location.href = "excluir_registros.php";
          return true;
 
       }else{
@@ -197,57 +215,56 @@ $(document).ready(function(){
       }
    }
 
-   // Fun��o que verifica se o navegador tem suporte AJAX
+      // Fun��o que verifica se o navegador tem suporte AJAX
    function AjaxF()
    {
-   	var ajax;
+    var ajax;
 
-   	try
-   	{
-   		ajax = new XMLHttpRequest();
-   	}
-   	catch(e)
-   	{
-   		try
-   		{
-   			ajax = new ActiveXObject("Msxml2.XMLHTTP");
-   		}
-   		catch(e)
-   		{
-   			try
-   			{
-   				ajax = new ActiveXObject("Microsoft.XMLHTTP");
-   			}
-   			catch(e)
-   			{
-   				alert("Seu browser não suporta AJAX!");
-   				return false;
-   			}
-   		}
-   	}
-   	return ajax;
+    try
+    {
+      ajax = new XMLHttpRequest();
+    }
+    catch(e)
+    {
+      try
+      {
+        ajax = new ActiveXObject("Msxml2.XMLHTTP");
+      }
+      catch(e)
+      {
+        try
+        {
+          ajax = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        catch(e)
+        {
+          alert("Seu browser não suporta AJAX!");
+          return false;
+        }
+      }
+    }
+    return ajax;
    }
 
    // função que faz as requisições AJAX ao PHP.
    function AlteraConteudo(){
 
-   	var ajax = AjaxF();
+    var ajax = AjaxF();
 
-   	ajax.onreadystatechange = function(){
-   		if(ajax.readyState == 4)
-   		{
-   			document.getElementById('cont').innerHTML = ajax.responseText;
-   		}
-   	}
+    ajax.onreadystatechange = function(){
+      if(ajax.readyState == 4)
+      {
+        document.getElementById('cont').innerHTML = ajax.responseText;
+      }
+    }
 
-   	// Vari�vel com os dados que ser�o enviados ao PHP
-   	//var dados = document.getElementById('recarregar').value;
+    // Vari�vel com os dados que ser�o enviados ao PHP
+    //var dados = document.getElementById('recarregar').value;
 
-   	ajax.open("GET", "./dados.php", false);
-   	ajax.setRequestHeader("Content-Type", "text/html");
-   	ajax.send();
+    ajax.open("GET", "./dados.php", false);
+    ajax.setRequestHeader("Content-Type", "text/html");
+    ajax.send();
    }
-
 </script>
 
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
