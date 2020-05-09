@@ -32,32 +32,31 @@ $array = $cliDAO->buscarCliente();
   <title>Rota</title>
 </head>
 <body class="animated fadeIn" id="cont">
-
   <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-      <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
-      <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <img src="img/menu.svg">
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.php">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="index.php">Sobre</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="contato.php">Contato</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
+    <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <img src="img/menu.svg">
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.php">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.php">Sobre</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contato.php">Contato</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
   <?php
       if(isset($array)){
@@ -68,10 +67,11 @@ $array = $cliDAO->buscarCliente();
               <h3 align='center' class='alert mt-3' role='alert' style='background: black; color: white;'>Não há registro cadastrado no sistema!
               <a href='index.php' style='color: red;'>Voltar a Página Inicial</a>
               </h3>
-              <fieldset class="fieldset-border col-md-2">
+              <fieldset class="fieldset-border col-md-2 controle_dados">
                 <legend class="legend-border">Controles</legend>
                   <button type="button" id="btn-backup" name="inserir_img" class="ml-4 btn mt-2 mb-2" onclick="window.location.href = './inserir_imagem.php';"><img src='img/upload_img.png' class="mr-1">Inserir imagens</button>
                   <button type="button" id="btn-backup" class="ml-4 btn mt-2 mb-2" onclick="window.location.href = './gerenciar_imagens.php';"><img src='img/edit_img.png' class="mr-1">Editar imagens</button>
+                  <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './restore.php';"><img src='img/backup_restore.png' class="mr-1">Restaurar Backup</button>
                 </fieldset>
               </div>
 
@@ -90,7 +90,6 @@ $array = $cliDAO->buscarCliente();
        <button type="button" id="btn-backup" name="inserir_img" class="btn mt-2 mb-2" onclick="window.location.href = './inserir_imagem.php';"><img src='img/upload_img.png' class="mr-1">Inserir imagens</button>
        <button type="button" id="btn-backup" class="btn mt-2 mb-2" onclick="window.location.href = './gerenciar_imagens.php';"><img src='img/edit_img.png' class="mr-1">Gerenciar imagens</button>
        <button type="button" id="btn-backup" name="atualizar" class="btn mt-2 mb-2" onclick="window.location.href = './dados.php';"><img src='img/atualizar.svg' class="mr-1">Atualizar</button>
-      <button type="button" onclick="return AlteraConteudo()">verificar</button>
      </fieldset>
      <form name="filtrar-dados" method="post" style="float: left">
       <div class="row">
@@ -129,11 +128,7 @@ $array = $cliDAO->buscarCliente();
    }
     ?>
 
-  <div class="table-responsive-md" id="recarregar" onchange=" $(document).ready(function(){
-        setInterval(function(){
-            $('#recarregar').load('./dados.php')
-        }, 1000);
-    });">
+  <div class="table-responsive-md">
       <table id="tabela" class="table table-dark table-bordered table-hover table-condensed">
         <thead align="center">
     <tr>
@@ -177,13 +172,18 @@ $array = $cliDAO->buscarCliente();
   </table>
   </div>
  </div>
-     <script type="text/javascript">
 
-$(document).ready(function(){
+ <script type="text/javascript">
 
-    setInterval(function(){
-          $('#recarregar').load('dados.php')
-      }, 1000);
+// $(document).ready(function() {
+ $.ajax({
+ type: 'POST',
+     url: 'dados.php',
+     data: {tabela:tabela},
+     success: function(res) {
+             $('#tabela').html(res).delay(2000);
+     }
+    // });
   });
 
     function verificarExclusaoPeloCPF(cpf){
@@ -196,8 +196,7 @@ $(document).ready(function(){
                 return true;
 
               }else{
-                console.log(decisao)
-                  return false;
+                return false;
               }
     }
 
@@ -213,57 +212,6 @@ $(document).ready(function(){
       }else{
          return false;
       }
-   }
-
-      // Fun��o que verifica se o navegador tem suporte AJAX
-   function AjaxF()
-   {
-    var ajax;
-
-    try
-    {
-      ajax = new XMLHttpRequest();
-    }
-    catch(e)
-    {
-      try
-      {
-        ajax = new ActiveXObject("Msxml2.XMLHTTP");
-      }
-      catch(e)
-      {
-        try
-        {
-          ajax = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        catch(e)
-        {
-          alert("Seu browser não suporta AJAX!");
-          return false;
-        }
-      }
-    }
-    return ajax;
-   }
-
-   // função que faz as requisições AJAX ao PHP.
-   function AlteraConteudo(){
-
-    var ajax = AjaxF();
-
-    ajax.onreadystatechange = function(){
-      if(ajax.readyState == 4)
-      {
-        document.getElementById('cont').innerHTML = ajax.responseText;
-      }
-    }
-
-    // Vari�vel com os dados que ser�o enviados ao PHP
-    //var dados = document.getElementById('recarregar').value;
-
-    ajax.open("GET", "./dados.php", false);
-    ajax.setRequestHeader("Content-Type", "text/html");
-    ajax.send();
    }
 </script>
 

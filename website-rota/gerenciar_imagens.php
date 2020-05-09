@@ -62,9 +62,17 @@ $dados = $cliDAO->buscarImagem();
         <img src="img/logo-rota.png">
         </div>
         <h3 id="titulo-login" align="center">Gerenciamento de Imagens</h3>
+        <form method="post" onsubmit="return verificaExclusao()">
+          <input type="submit" id="btn-limpar" class="btn float-top" name="excluir_imagens" value="Excluir todas as imagens">
+        </form>
         </div>
         <hr>
         <?php
+        if(isset($_POST['excluir_imagens'])){
+          include_once 'dao/clienteDAO.class.php';
+          $cliDAO = new ClienteDAO();
+          $cliDAO->deletarTodasAsImagens();
+        }
 
        if(empty($dados)){
 

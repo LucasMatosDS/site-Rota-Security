@@ -59,7 +59,7 @@ ob_start();
      <form method="POST" action="cadastro.php" name="dadosCadastro">
        <div class="form-group col-md-8">
           <label>Nome Completo:</label>
-          <input type="text" class="form-control" name="nome" value='' autocomplete="off" placeholder="Informe seu Nome" onkeypress="return SomenteLetras(event)" required="true"/>
+          <input type="text" class="form-control" name="nome" autocomplete="off" placeholder="Informe seu Nome" onkeypress="return SomenteLetras(event)" required="true"/>
        </div>
        <div class="form-group col-md-8">
           <label>E-mail:</label>
@@ -77,8 +77,8 @@ ob_start();
             <label>Repetir Senha:</label>
             <input type="password" class="form-control mb-2" name="Rsenha" maxlength="8" autocomplete="off" placeholder="Confirmar Senha" required="true"/>
           </div>
-        <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 button-form ml-3">Cadastrar</button>
-        <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2 button-form">
+        <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 ml-3">Cadastrar</button>
+        <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2">
    Cancelar</button>
       </div>
      </form>

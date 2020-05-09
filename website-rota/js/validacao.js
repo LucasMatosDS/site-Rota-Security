@@ -68,6 +68,17 @@
  }
 }
 
+    function verificaExclusao(){
+
+         var decisao = confirm("você desejá deletar todas as imagens ?");
+
+         if(decisao == true){
+            return true;
+         }else{
+           return false;
+         }
+    }
+
     function recuperarSenha(){
 
         var email = recuperarDados.email.value;
@@ -79,5 +90,4 @@
           return false;
 
         }
-
     }

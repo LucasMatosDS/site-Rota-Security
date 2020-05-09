@@ -19,7 +19,7 @@ ob_start();
   <title>Rota</title>
 </head>
 
-<body class="animated fadeIn">
+<body>
   <!-- Navigation -->
 <!--   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
@@ -67,8 +67,7 @@ ob_start();
    Cancelar</button>
       </div>
      </form>
-
- <?php
+     <?php
 
   if(isset($_SESSION['msg'])){
      echo $_SESSION['msg'];
@@ -123,6 +122,9 @@ ob_start();
 
 
   ?>
+   </div>
+
+ 
   <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
@@ -144,5 +146,6 @@ ob_start();
      }
   }
   </script> -->
+
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
  include_once 'dao/clienteDAO.class.php';
- $cliDAO = new clienteDAO;
+ $cliDAO = new clienteDAO();
  $cliDAO->cadastrarAdministradores();
  ?>
 <!DOCTYPE html>
@@ -52,7 +52,7 @@
         <div align="center">
         <img src="img/logo-rota.png">
         </div>
-        <h3 id="titulo-login" align="center">Login</h3>
+        <h3 id="titulo-login" class="titulo-login1" align="center">Login</h3>
           </li>
           <hr>
         </div>

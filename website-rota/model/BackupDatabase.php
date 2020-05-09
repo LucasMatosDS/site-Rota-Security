@@ -55,19 +55,22 @@ class BackupDatabase
 
         // Gerando nome único para o arquivo
         date_default_timezone_set('America/Sao_Paulo');
-        $fileName = 'ROTA-BACKUP-'. date('d-m-y H:i:s').'.sql';
+        // $fileName = 'ROTA-BACKUP-'. date('d-m-y H:i:s').'.sql.zip';
+        $fileName = 'ROTA-BACKUP'.date('d-m-y H:i:s').'.sql';
         $filePath = $this->backupFolder . '/' . $fileName;
 for($i = 0; $i <= 10; $i++){
         // Definindo informações para geração do backup
-        $dump = new Mysqldump("mysql:host={$this->host};dbname={$this->database}", $this->username, $this->password, array(
-            'compress' => Mysqldump::GZIP,
-        ));
+        // $dump = new Mysqldump("mysql:host={$this->host};dbname={$this->database}", $this->username, $this->password, array(
+        //     'compress' => Mysqldump::GZIP,
+        // ));
+        $dump = new Mysqldump("mysql:host={$this->host};dbname={$this->database}", $this->username, $this->password);
+
     }
 
         // Gerando backup
         $dump->start($filePath);
         echo "<body style='background: black;'>
-        <div align='center'>        
+        <div align='center'>
         <img src='img/logo-rota.png'>
         <p style='color: white;font-size: 25px; align='center'>
         Executando Backup ...

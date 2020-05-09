@@ -127,7 +127,7 @@ class ClienteDAO{
    public function buscarArquivo($id){
 
       try{
-       
+
        $statement = $this->conexao->prepare('select arquivo as arq from clientes where id = :id and id != 1 && id != 2');
 
         $statement->bindValue(":id", $id);
@@ -153,6 +153,28 @@ class ClienteDAO{
         }catch(PDOException $e){
           echo "Erro: ao buscar dados do cliente!". $e;
         }
+  }
+
+  public function buscarTabelas(){
+
+      try{
+
+        $statement = $this->conexao->prepare("select * from clientes,imagens");
+        $statement->execute();
+
+        if($statement->rowCount() > 0){
+           $this->deletarTabelas();
+           return true;
+
+        }else{
+
+           return false;
+
+        }
+
+      }catch(PDOException $e){
+        echo "Erro: ao buscar dados das tabelas!";
+      }
   }
 
    public function deletarCliente($cpf){
@@ -185,16 +207,46 @@ class ClienteDAO{
        }
   }
 
-public function deletarTodosOsRegistros(){
+  public function deletarTodosOsRegistros(){
 
      try{
 
-         $statement = $this->conexao->prepare("delete from clientes where id != 1 and id != 2;");
-         $statement->execute();
+         $statement = $this->conexao->query("delete from clientes where id != 1 and id != 2;");
+
 
      }catch(PDOException $e){
        echo "Erro: ao excluir os Registros!";
      }
+}
+
+  public function deletarTodasAsImagens(){
+
+      try{
+
+         $statement = $this->conexao->query("select * from imagens");
+
+          if($statement->rowCount() > 0){
+                $statement = $this->conexao->query("delete from imagens");
+                header('location: gerenciar_imagens.php');
+          }else{
+
+          }
+
+      }catch(PDOException $e){
+        echo "Erro: ao excluir Imagens!";
+      }
+
+}
+
+  public function deletarTabelas(){
+
+        try{
+
+           $statement = $this->conexao->query("drop table clientes,imagens");          
+
+        }catch(PDOException $e){
+          echo "Erro: ao deletar Tabelas!";
+        }
 }
 
   public function reiniciarId(){
