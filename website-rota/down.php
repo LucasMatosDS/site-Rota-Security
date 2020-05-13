@@ -1,44 +1,40 @@
 <?php
-
-
-// Aqui vale qualquer coisa, desde que seja um diretório seguro :)
-define('ARQ', './arquivos/');
-
 include_once 'dao/clienteDAO.class.php';
-include_once 'model/cliente.class.php';
 
-  $cliDAO = new ClienteDAO();
-  $cli = new cliente();
-  $id = $_GET['id'];
-  // $dados = $cliDAO->buscarDadosCliente($id);
-  $array = $cliDAO->buscarArquivo($id);
+$cliDAO = new ClienteDAO();
 
-      ?>
-      <iframe src="arquivos/<?php echo $cli->nome_arq?>"></iframe>
-      <?php
+$id = $_GET['id'];
 
-// Vou dividir em passos a criação da variável $id pra ficar mais fácil de entender, mas você pode juntar tudo
-// Retira caracteres especiais
-$id = filter_var($id, FILTER_SANITIZE_STRING);
-// Retira qualquer ocorrência de retorno de diretório que possa existir, deixando apenas o nome do arquivo.
-$id = basename($id);
+$array = $cliDAO->buscarArquivo($id);
 
-// Aqui a gente só junta o diretório com o nome do arquivo
-$caminho_download = ARQ . $id;
+$caminho = "arquivos/";
 
-// Verificação da existência do arquivo
-if (!file_exists($caminho_download))
-   die('Arquivo não existe!');
+foreach($array as $row){
 
-header('Content-type: octet/stream');
+    if(is_dir($caminho)){
 
-// Indica o nome do arquivo como será "baixado". Você pode modificar e colocar qualquer nome de arquivo
-header('Content-disposition: attachment; filename="'.$id.'";');
+       if(file_exists($caminho.$row['arq'])){
 
-// Indica ao navegador qual é o tamanho do arquivo
-header('Content-Length: '.filesize($caminho_download));
+?>
+<!Doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div align="center" title="baixar">
+   <a id="btn-down" href='<?php echo $caminho.$row['arq']?>'><img src="img/download.png" height="40px" style="padding: 0px;"><?php echo $row['arq']?></a>
+</div>
+</body>
+</html>
+<?php
+ }else{
+   echo "Arquivo não existe na pasta $caminho.";
+ }
 
-// Busca todo o arquivo e joga o seu conteúdo para que possa ser baixado
-readfile($caminho_download);
+ }else{
+   echo "Diretório não existe.";
+ }
+}
 
-exit;
+?>

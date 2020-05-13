@@ -69,8 +69,8 @@ $array = $cliDAO->buscarCliente();
               </h3>
               <fieldset class="fieldset-border col-md-2 controle_dados">
                 <legend class="legend-border">Controles</legend>
-                  <button type="button" id="btn-backup" name="inserir_img" class="ml-4 btn mt-2 mb-2" onclick="window.location.href = './inserir_imagem.php';"><img src='img/upload_img.png' class="mr-1">Inserir imagens</button>
-                  <button type="button" id="btn-backup" class="ml-4 btn mt-2 mb-2" onclick="window.location.href = './gerenciar_imagens.php';"><img src='img/edit_img.png' class="mr-1">Editar imagens</button>
+                  <button type="button" id="btn-backup" name="inserir_img" class="btn mt-2 mb-2" onclick="window.location.href = './inserir_imagem.php';"><img src='img/upload_img.png' class="mr-1">Inserir imagens</button>
+                  <button type="button" id="btn-backup" class="btn mt-2 mb-2" onclick="window.location.href = './gerenciar_imagens.php';"><img src='img/edit_img.png'>Gerenciar imagens</button>
                   <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './restore.php';"><img src='img/backup_restore.png' class="mr-1">Restaurar Backup</button>
                 </fieldset>
               </div>
@@ -150,12 +150,12 @@ $array = $cliDAO->buscarCliente();
             ?>
 
             <?php
+
             echo "<tr>
             <ul>
               <td align='center'><li class='m-2'><a href='download.php?id=$cli->id' class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo'></a></li>
-              <li class='m-2'><a href='down.php?id=$cli->id' class='btn border border-light text-dark' style='background: silver'>teste download</a></li>
               <li class='m-2'><a href='alterar_arquivo.php?id=$cli->id' class='btn btn-light border border-light text-dark btn-deletar'><img src='img/edite.png' title='Editar'></a></li>
-              <li class='m-2'><a href='excluir.php?cpf=$cli->cpf' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></li></td>
+              <li class='m-2'><a href='excluir.php?id=$cli->id' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></li></td>
               ";
               echo "<td>$cli->nome</td>";
               echo "<td>$cli->email</td>";
@@ -175,6 +175,11 @@ $array = $cliDAO->buscarCliente();
 
  <script type="text/javascript">
 
+$(document).ready(function(){
+
+  $("#baixar").click();
+
+});
 // $(document).ready(function() {
  $.ajax({
  type: 'POST',

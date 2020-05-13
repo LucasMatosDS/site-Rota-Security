@@ -65,7 +65,7 @@ ob_start();
         </div>
      <form method="POST" action="" name="dadosArquivo" enctype="multipart/form-data">
        <div class="form-group col-md-8">
-           <label>Selecione o Arquivo:</label>
+           <label>Selecione a imagem:</label>
            <input type="file" name="foto" id="arquivo" accept=".png,.jpg,.jpeg" required="true">
           </div>
         <button id="btn-enviar" type="submit" name="salvar" class="btn mr-2 button-form ml-3">Salvar</button>
@@ -94,12 +94,20 @@ ob_start();
           $fotos = array();
 
         if(isset($_FILES['foto'])){
+          $caminho = "imagens/";
           $imagem = $_GET['imagem'];
-              //salvando dentro da pasta img.
-             $img->imagem = $_FILES['foto']['name'];
-                move_uploaded_file($_FILES['foto']['tmp_name'], 'imagens/'.$img->imagem);
 
-                 if(!empty($_FILES['foto']['name'])){
+          if(file_exists($caminho)){
+             unlink($caminho.$imagem);
+             //salvando dentro da pasta img.
+            $img->imagem = $_FILES['foto']['name'];
+               move_uploaded_file($_FILES['foto']['tmp_name'], 'imagens/'.$img->imagem);
+
+                if(!empty($_FILES['foto']['name'])){
+
+          }else{
+             echo "erro ao deletar $imagem";
+          }
 
                     ?>
 

@@ -9,7 +9,7 @@ include_once  'excluir.php';
 	$msg = "";
 
 	 if($parametro == ""){
-	 	
+
 	 }else{
 
 	//começamos a concatenar nossa tabela
@@ -24,32 +24,34 @@ include_once  'excluir.php';
 	 $msg .= "		</tr>";
 	 $msg .= "	</thead>";
 	$msg .= "	<tbody>";
-				
-				//requerimos a classe de conexão												
+
+				//requerimos a classe de conexão
 
 					try {
-						
+
 					   $cliDAO = new ClienteDAO();
 
-						$resultado = $cliDAO->selecionar("select * from clientes WHERE cpf LIKE '$parametro%'");						
+						$resultado = $cliDAO->selecionar("select * from clientes WHERE cpf LIKE '$parametro%' and cpf != '000.000.000-00' and cpf != '111.111.111-11'");
 
 						}catch (PDOException $e){
 							echo $e->getMessage();
-						}	
+						}
 						//resgata os dados na tabela
 						if(count($resultado)){
 							foreach ($resultado as $result) {
 
 	$msg .= "<tr>";
-	$msg .= "<td align='center'><a href=''  class='btn btn-warning border border-light text-dark'><img src='img/download.png' title='Baixar Arquivo'></a>
+	$msg .= "<td align='center'><a href='download.php?id=$result->id'  class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo'></a>
 			 </td>";
 	$msg .="<td>".$result['nome']."</td>";
 	$msg .="<td>".$result['email']."</td>";
 	$msg .="<td>".$result['descricao']."</td>";
 	$msg .="</tr>";
 
-			}
-   				}else{
+		}
+
+   	}else{
+
 	$msg = "";
 	$msg .="<h4 align='center'><strong>Sua pesquisa não retornou nenhum Registro!</strong></h4>";
 						}

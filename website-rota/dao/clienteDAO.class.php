@@ -102,6 +102,7 @@ class ClienteDAO{
      }
    }
 
+
    public function buscarImagem(){
 
       try{
@@ -132,7 +133,7 @@ class ClienteDAO{
 
         $statement->bindValue(":id", $id);
         $statement->execute();
-        $array = $statement->fetchAll(PDO::FETCH_CLASS, "Cliente");
+        $array = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $array;
 
       }catch(PDOException $e){
@@ -145,6 +146,7 @@ class ClienteDAO{
         try{
 
           $statement = $this->conexao->prepare('select * from clientes where id = :id');
+
           $statement->bindValue(":id", $id);
           $statement->execute();
           $array = $statement->fetchAll(PDO::FETCH_CLASS, "Cliente");
@@ -177,14 +179,14 @@ class ClienteDAO{
       }
   }
 
-   public function deletarCliente($cpf){
+   public function deletarCliente($id){
 
      try{
 
        $statement = $this->conexao->prepare(
-         "delete from clientes where cpf = :c");
+         "delete from clientes where id = :id");
 
-       $statement->bindValue(":c", $cpf);
+       $statement->bindValue(":id", $id);
        $statement->execute();
 
      }catch(PDOException $e){
@@ -242,7 +244,7 @@ class ClienteDAO{
 
         try{
 
-           $statement = $this->conexao->query("drop table clientes,imagens");          
+           $statement = $this->conexao->query("drop table clientes,imagens");
 
         }catch(PDOException $e){
           echo "Erro: ao deletar Tabelas!";
@@ -253,11 +255,10 @@ class ClienteDAO{
 
         try{
 
-          $statement = $this->conexao->prepare(
+           $statement = $this->conexao->query(
            "alter table clientes auto_increment = 1;");
-          $statement = $this->conexao->prepare(
+          $statement = $this->conexao->query(
            "alter table imagens auto_increment = 1;");
-          $statement->execute();
 
         }catch(PDOException $e){
            echo "Erro: ao resetar chave do registro!".$e;

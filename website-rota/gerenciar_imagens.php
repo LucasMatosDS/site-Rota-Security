@@ -72,6 +72,10 @@ $dados = $cliDAO->buscarImagem();
           include_once 'dao/clienteDAO.class.php';
           $cliDAO = new ClienteDAO();
           $cliDAO->deletarTodasAsImagens();
+          $caminho = "imagens/";
+          system("rm -rf $caminho");
+
+          $cliDAO->reiniciarId();
         }
 
        if(empty($dados)){
@@ -89,7 +93,7 @@ $dados = $cliDAO->buscarImagem();
                 ?>
                 <div class="card" id="imagem2" style="cursor: inherit;">
                   <div class="card-body">
-                      <img src="imagens/<?php echo $imagem['foto'];?>" class="img-fluid" id="imagem3" title="visualizar imagem" alt="Imagem Indisponível">
+                      <img src="imagens/<?php echo $imagem['foto'];?>" class="img-fluid" id="imagem3" title="visualizar imagem" alt="Imagem Indisponível" onclick="window.location.href = 'imagens/<?php echo $imagem['foto'];?>';">
                     <hr>
                     <a href="excluir.php?imagem=<?php echo $imagem['foto']; ?>" class="btn btn-danger col-md-12 deletar mb-2"><img src="img/trash.svg" class="mr-2" width="25px">Excluir</a>
                     <a href="editar_imagem.php?imagem=<?php echo $imagem['foto'];?>" class="btn btn-primary col-md-12 deletar"><img src="img/edite.png"  class="mr-2" width="25px">Editar</a>

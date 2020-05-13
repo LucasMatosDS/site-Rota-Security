@@ -106,10 +106,10 @@ ob_start();
 
         if(isset($_FILES['arq'])){
               //salvando dentro da pasta img.
-             $cli->nome_arq = md5(uniqid($_FILES['arq']['name']));
-                move_uploaded_file($_FILES['arq']['tmp_name'], 'arquivos/'.$cli->nome_arq);
+                 $cli->nome_arq = $_FILES['arq']['name'];
+                    move_uploaded_file($_FILES['arq']['tmp_name'], 'arquivos/'.$cli->nome_arq);
 
-                 if(!empty($_FILES['arq']['name'])){
+                     if(!empty($_FILES['arq']['name'])){
 
                     ?>
 

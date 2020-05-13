@@ -60,7 +60,7 @@ ob_start();
      <form method="POST" action="" name="dadosArquivo" enctype="multipart/form-data">
        <div class="form-group col-md-8">
            <label>Selecione a imagem:</label>
-           <input type="file" name="foto[]" multiple id="arquivo" accept=".png,.jpg,.jpeg" required="true">
+           <input type="file" name="foto" id="arquivo" accept=".png,.jpg,.jpeg" required="true">
           </div>
         <button id="btn-enviar" type="submit" name="cadastrar" class="btn mr-2 button-form ml-3">Cadastrar</button>
         <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2 button-form">
@@ -88,11 +88,8 @@ ob_start();
 
         if(isset($_FILES['foto'])){
               //salvando dentro da pasta imgagens.
-          for($i = 0; $i < count($_FILES['foto']['tmp_name']); $i++){
-             $img->imagem = $_FILES['foto']['name'][$i];
-                move_uploaded_file($_FILES['foto']['tmp_name'][$i], 'imagens/'.$img->imagem);
-
-            }
+             $img->imagem = $_FILES['foto']['name'];
+                move_uploaded_file($_FILES['foto']['tmp_name'], 'imagens/'.$img->imagem);
 
                  if(!empty($_FILES['foto']['name'])){
 
@@ -100,7 +97,7 @@ ob_start();
 
                 <div class="alert alert-success alert-dismissible" role="alert">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>imagens inseridas com sucesso!</strong>
+                    <strong>imagem inserida com sucesso!</strong>
                 </div>
 
                     <?php
@@ -124,7 +121,7 @@ ob_start();
   ?>
    </div>
 
- 
+
   <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
