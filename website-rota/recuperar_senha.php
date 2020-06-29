@@ -1,7 +1,10 @@
 <?php
- ob_start();
+session_start();
+ob_start();
+
  include_once 'dao/clienteDAO.class.php';
  $cliDAO = new ClienteDAO();
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -34,10 +37,10 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php">Sobre</a>
+          <a class="nav-link" href="index.php?#cont1">Sobre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          <a class="nav-link" href="sair.php">Area do CLiente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contato.php">Contato</a>
@@ -76,8 +79,6 @@
         $email = addslashes($_POST['email']);
           if(!empty($email)){
         $senha = $cliDAO->geraSenha(8, true, true);
-                $cliDAO->conectar("rota", "localhost", "root", "");
-
 
                 if($cliDAO->recuperarSenha($email, $senha)){
 
@@ -106,7 +107,7 @@
                 ?>
                 <div class="alert alert-danger alert-dismissible" role="alert">
                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                       <strong>Necessário preencher os campos!</strong>
+                       <strong>Necessário informar um E-mail!</strong>
                 </div>
                 <?php
               }

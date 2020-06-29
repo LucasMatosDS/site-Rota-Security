@@ -1,8 +1,13 @@
 <?php
+session_start();
+
+ if(!isset($_SESSION['id'])){
+ 	  header('location: area_cliente.php');
+ 	  exit;
+ }
 
 include_once  'dao/clienteDAO.class.php';
 include_once  'model/cliente.class.php';
-include_once  'excluir.php';
 
 //recebemos nosso parâmetro vindo do form
 	$parametro = isset($_POST['pesquisa']) ? $_POST['pesquisa'] : null;
@@ -20,6 +25,7 @@ include_once  'excluir.php';
 	 $msg .= "			<th>Ações</th>";
 	 $msg .= "			<th>Nome</th>";
 	 $msg .= "			<th>E-mail</th>";
+	 $msg .= "			<th>Arquivo</th>";
 	 $msg .= "			<th>Descrição</th>";
 	 $msg .= "		</tr>";
 	 $msg .= "	</thead>";
@@ -30,21 +36,33 @@ include_once  'excluir.php';
 					try {
 
 					   $cliDAO = new ClienteDAO();
+						 $result = new Cliente();
 
-						$resultado = $cliDAO->selecionar("select * from clientes WHERE cpf LIKE '$parametro%' and cpf != '000.000.000-00' and cpf != '111.111.111-11'");
+						$resultado = $cliDAO->selecionar($parametro);
 
 						}catch (PDOException $e){
 							echo $e->getMessage();
 						}
 						//resgata os dados na tabela
 						if(count($resultado)){
-							foreach ($resultado as $result) {
+							foreach ($resultado as $result){
+								$caminho = "arquivos/";
 
 	$msg .= "<tr>";
-	$msg .= "<td align='center'><a href='download.php?id=$result->id'  class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo'></a>
+	$msg .= "<td align='center'><a href='arquivos/$result[arquivo]' download class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo'></a>
 			 </td>";
 	$msg .="<td>".$result['nome']."</td>";
 	$msg .="<td>".$result['email']."</td>";
+	if(is_dir($caminho)){
+		if(file_exists($caminho.$result['arquivo'])){
+
+				 $msg .= "<td><a class='text-danger' style='font-size: 18px; text-style: bold; font-weight: bold;' href='arquivos/$result[arquivo]' title='visualizar o arquivo'>$result[arquivo]</a></td>";
+	}else{
+		$msg .= "<td class='text-danger'>Arquivo indisponível para <li class='text-light d-inline'>download</li> no momento.</td>";
+	}
+}else{
+	$msg .= "<td class='text-danger'>diretório <strong class='text-light'>$caminho</strong> não existe.</td>";
+}
 	$msg .="<td>".$result['descricao']."</td>";
 	$msg .="</tr>";
 

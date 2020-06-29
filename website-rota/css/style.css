@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
 @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 @font-face {
   font-family: "army";
@@ -15,7 +16,6 @@ html,body {
 }
 
 .subtitulo{
-  text-decoration: underline;
   text-decoration-color: black;
 }
 
@@ -32,6 +32,22 @@ table{
   border: 5px solid silver!important;
 }
 
+th{
+  font-family: 'Bebas Neue';
+  font-size: 19px;
+  font-style: italic;
+}
+
+td{
+  font-family: 'Bebas Neue';
+  font-size: 19px;
+  text-align: center;
+}
+
+#tab-line{
+  display: inline-block;
+}
+
 /* config carousel css */
 .carousel-item {
   height: 75vh;
@@ -45,7 +61,7 @@ table{
 }
 
 .carousel-inner {
-  .transition(.7s ease-in-out left);
+  .transition(.2s ease-in-out left);
 }
 
 .carousel-control-prev-icon{
@@ -351,7 +367,8 @@ textarea{
 }
 
 #imagemDownload{
-     width: 30px;
+     width: 40px;
+     height: 30px;
 }
 
 #btn-down{
@@ -378,6 +395,31 @@ textarea{
   text-decoration: none;
   cursor: pointer;
 }
+
+#attention{
+  margin-top: 70px;
+}
+
+#titulo-base{
+  color: red;
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: 300px;
+  margin-right: 0px;
+}
+
+#postagem{
+  height: 300px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: justify;
+  white-space: normal;
+}
+
+#cont_post:hover{
+  background-color: lightgray;
+}
+
 /* media queries */
 @media screen and (max-width:720px) and (min-width:320px){
 
@@ -446,18 +488,17 @@ textarea{
     padding-top: 0px;
     margin: 0 0 1.0em 0 !important;
     padding-left: 20px!important;
-    width: 82%;
     -webkit-box-shadow: 0px 0px 0px 0px #000;
-    box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;    
   }
 
-#pesquisa_dados{
-    width: 60%;
-  }
+  #pesquisa_dados{
+      width: 60%;
+    }
 
-#filtro_pesquisa{
-    width: 40%;
-  }
+  #filtro_pesquisa{
+      width: 40%;
+    }
 
   #pesquisa{
      width: 88%;
@@ -528,6 +569,11 @@ textarea{
 
   .importar{
     float: left;
+  }
+
+  #pesq{
+    display: inline-block;
+    font-size: 20px;
   }
 
 }

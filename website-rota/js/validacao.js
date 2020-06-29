@@ -68,7 +68,35 @@
  }
 }
 
-    function verificaExclusao(){
+function verificarExclusaoPeloCPF(cpf){
+
+    var decisao = confirm('Desejá Excluir o Registro ?');
+
+      if(decisao == true){
+            alert('Registro excluido com sucesso!');
+            window.location.href = "excluir.php?cpf=" + cpf;
+            return true;
+
+          }else{
+            return false;
+          }
+}
+
+function verificarExclusaoDeRegistros(){
+
+  var decisao1 = confirm('Desejá Excluir todos os Registros ?');
+
+ if(decisao1 == true){
+     alert('Registros excluidos com sucesso!');
+     window.location.href = "excluir_registros.php";
+     return true;
+
+  }else{
+     return false;
+  }
+}
+
+    function verificaExclusaoI(){
 
          var decisao = confirm("você desejá deletar todas as imagens ?");
 
@@ -77,6 +105,17 @@
          }else{
            return false;
          }
+    }
+
+    function verificaExclusaoP(){
+
+      var decisao = confirm("você desejá deletar todas as postagens ?");
+
+      if(decisao == true){
+         return true;
+      }else{
+        return false;
+      }
     }
 
     function recuperarSenha(){

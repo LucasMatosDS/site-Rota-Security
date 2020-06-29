@@ -3,11 +3,9 @@ session_start();
 ob_start();
 
  include_once 'dao/clienteDAO.class.php';
- include_once 'model/imagem.class.php';
 
 $cliDAO = new ClienteDAO();
-$img = new Imagem();
-$dados = $cliDAO->buscarImagem();
+$dados_postagem = $cliDAO->buscarPostagem();
 ?>
 
 <!DOCTYPE html>
@@ -60,49 +58,47 @@ $dados = $cliDAO->buscarImagem();
         <div align="center">
         <img src="img/logo-rota.png">
         </div>
-        <h3 id="titulo-login" align="center">Gerenciamento de Imagens</h3>
-        <form method="post" onsubmit="return verificaExclusaoI()">
-          <input type="submit" id="btn-limpar" class="btn float-top" name="excluir_imagens" value="Excluir todas as imagens">
+        <h3 id="titulo-login" align="center">Gerenciamento de Postagens</h3>
+        <form method="post" onsubmit="return verificaExclusaoP()">
+          <input type="submit" id="btn-limpar" class="btn float-top" name="excluir_postagens" value="Excluir todas as postagens">
         </form>
         </div>
         <hr>
         <?php
 
-        if(isset($_POST['excluir_imagens'])){
+        if(isset($_POST['excluir_postagens'])){
           include_once 'dao/clienteDAO.class.php';
           $cliDAO = new ClienteDAO();
-          $cliDAO->deletarTodasAsImagens();
-          $caminho = "imagens/";
-          system("rm -rf $caminho");
+          $cliDAO->deletarTodasAsPostagens();
           $cliDAO->reiniciarId();
         }
 
-       if(empty($dados)){
+       if(empty($dados_postagem)){
 
-        ?>
-
-        <div align="center">
-            <strong style="font-size: 20px; color: red;">Ainda não há imagens cadastradas!</strong>
-        </div>
-
+       ?>
+         <div align="center" class="mt-4 mb-4">
+               <strong style="font-size: 20px; color: red;">Ainda não há postagens inseridas!</strong>
+           </div>
         <?php
+
        }else{
-            foreach($dados as $imagem){
+
+            foreach($dados_postagem as $conteudo){
 
                 ?>
-                <div class="card" id="imagem2" style="cursor: inherit;">
+                <div class="card mb-2" id="cont_post">
                   <div class="card-body">
-                      <img src="imagens/<?php echo $imagem['foto'];?>" class="img-fluid" id="imagem3" title="visualizar imagem" alt="Imagem Indisponível!" onclick="window.location.href = 'imagens/<?php echo $imagem['foto'];?>';">
-                    <hr>
-                    <a href="excluir.php?imagem=<?php echo $imagem['foto']; ?>" class="btn btn-danger col-md-12 deletar mb-2"><img src="img/trash.svg" class="mr-2" width="25px">Excluir</a>
-                    <a href="editar_imagem.php?imagem=<?php echo $imagem['foto'];?>" class="btn btn-primary col-md-12 deletar"><img src="img/edite.png"  class="mr-2" width="25px">Editar</a>
+                    <h4 style="text-decoration: underline;"><?php echo $conteudo['titulo_postagem'];?></h4>
+                      <p><?php echo $conteudo['conteudo'];?></p>
+                      <hr>
+                    <a href="excluir.php?postagem=<?php echo $conteudo['titulo_postagem']; ?>" class="btn btn-danger deletar mb-2"><img src="img/trash.svg" class="mr-2" width="25px">Excluir</a>
+                    <a href="editar_postagem.php?postagem=<?php echo $conteudo['id_postagem'];?>" class="btn btn-primary deletar mb-2"><img src="img/edite.png"  class="mr-2" width="25px">Editar</a>
                   </div>
                 </div>
                 <?php
           }
         }
        ?>
-       <hr>
       </div>
 
   <script src="js/jquery.slim.min.js"></script>

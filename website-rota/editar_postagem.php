@@ -1,14 +1,10 @@
 <?php
 session_start();
 ob_start();
-
- if(isset($_GET['id'])){
-
-      include_once 'model/imagem.class.php';
-      include_once 'dao/clienteDAO.class.php';
- }
-
+include_once 'dao/clienteDAO.class.php';
+$cliDAO = new ClienteDAO();
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -52,23 +48,33 @@ ob_start();
     </div>
   </nav>
 
-  <div id="cadastre_se" class="container texto cadastro">
+  <div id="cadastre_se" class="container texto cadastro w-75">
     <div class="card-body">
-        <a href="gerenciar_imagens.php" id="arrow-left" title="voltar"><img src="img/arrow-left.png"></a>
+        <a href="gerenciar_postagens.php" id="arrow-left" title="voltar"><img src="img/arrow-left.png"></a>
       <div class="card-title">
         <div align="center">
         <img src="img/logo-rota.png">
         </div>
-        <h3 id="titulo-login" align="center">editar imagem</h3>
+        <h3 id="titulo-login" align="center">editar postagem</h3>
           </li>
           <hr>
-        </div>
-     <form method="POST" action="" name="dadosArquivo" enctype="multipart/form-data">
-       <div class="form-group col-md-8">
-           <label>Selecione a imagem:</label>
-           <input type="file" name="foto" id="arquivo" accept=".png,.jpg,.jpeg" required="true">
-          </div>
-        <button id="btn-enviar" type="submit" name="salvar" class="btn mr-2 button-form ml-3">Salvar</button>
+
+        <?php
+
+          $id_postagem = $_GET['postagem'];
+          $dados_postagem = $cliDAO->buscarPostagemIndiv($id_postagem);
+
+          foreach($dados_postagem as $conteudo){
+
+
+        ?>
+
+      <form method="POST">
+      <label>insira o título da pstagem:</label>
+      <input type="text" class="form-control col-md-3 mb-2" name="titulo" value="<?php echo $conteudo['titulo_postagem'];?>" placeholder="informe o titulo da postagem" autocomplete="off" required>
+      <label>insira o conteudo da postagem:</label>
+      <textarea class="form-control mb-2" id="postagem" name="conteudo" maxlength="1000" placeholder="ESCREVA AQUI ..." autocomplete="off" required><?php echo $conteudo['conteudo'];?></textarea>
+        <button id="btn-enviar" type="submit" name="salvar" class="btn mr-2 button-form ml-3">salvar</button>
         <button id="btn-limpar" type="reset" name="limpar" class="btn mr-2 button-form">
    Cancelar</button>
       </div>
@@ -76,77 +82,32 @@ ob_start();
 
  <?php
 
+  }
+
   if(isset($_SESSION['msg'])){
      echo $_SESSION['msg'];
       unset($_SESSION['msg']);
 
   }
- ?>
-
- <?php
 
     if(isset($_POST['salvar'])){
 
-          include_once 'model/imagem.class.php';
-          include_once 'dao/clienteDAO.class.php';
-          $img = new Imagem();
+          $id_postagem = $_GET['postagem'];
+          $titulo_postagem = $_POST['titulo'];
+          $conteudo = $_POST['conteudo'];
 
-          $fotos = array();
-
-        if(isset($_FILES['foto'])){
-          $caminho = "imagens/";
-          $imagem = $_GET['imagem'];
-
-          if(file_exists($caminho.$imagem)){
-                unlink($caminho.$imagem);
-
-             //salvando dentro da pasta img.
-            $img->imagem = md5(uniqid($_FILES['foto']['name']));
-               move_uploaded_file($_FILES['foto']['tmp_name'], 'imagens/'.$img->imagem);
-
+          $cliDAO->alterarPostagem($id_postagem,$titulo_postagem,$conteudo);
             ?>
 
             <div class="alert alert-success alert-dismissible" role="alert">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Imagem alterada com sucesso!</strong>
+                <strong>postagem alterada com sucesso!</strong>
             </div>
 
             <?php
-
-                if(!empty($_FILES['foto']['name'])){
-
-          }else{
-             echo "erro ao deletar $imagem";
           }
-
-        }else{
-
-          $img->imagem = md5(uniqid($_FILES['foto']['name']));
-             move_uploaded_file($_FILES['foto']['tmp_name'], 'imagens/'.$img->imagem);
-
-           ?>
-
-           <div class="alert alert-success alert-dismissible" role="alert">
-               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-               <strong>Imagem inserida com sucesso!</strong>
-           </div>
-
-           <?php
-        }
-                //salvar nomes para enviar para o banco.
-
-                //inserindo dentro da variavel fotos o nome da imagem.
-                array_push($fotos, $img->imagem);
-
-            $cliDAO = new ClienteDAO();
-            $cliDAO->alterarImagem($img,$imagem);
-
-            $img->__destruct();
-  }
-}
-
-
   ?>
+
   <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>
   <script src="js/jquery-3.3.1.min.js"></script>

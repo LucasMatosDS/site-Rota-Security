@@ -4,17 +4,17 @@ ob_start();
 
 include_once  'dao/clienteDAO.class.php';
 include_once  'model/cliente.class.php';
+include_once  'model/imagem.class.php';
 
 $cliDAO = new ClienteDAO();
+$cli = new Cliente();
 $array = $cliDAO->buscarCliente();
 
-   if(!isset($_SESSION['id'])){
-
-      header("location: area_cliente.php");
-      exit;
-   }
-
- ?>
+if(empty($array)){
+   header("location: area_cliente.php");
+   exit;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -46,10 +46,10 @@ $array = $cliDAO->buscarCliente();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php">Sobre</a>
+          <a class="nav-link" href="index.php?#cont1">Sobre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          <a class="nav-link" href="sair.php">Area do CLiente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contato.php">Contato</a>
@@ -61,16 +61,18 @@ $array = $cliDAO->buscarCliente();
   <?php
       if(isset($array)){
           if(count($array) == 0){
-            ?>
 
-            <div class='col-md-12' style='top: 85px;'>
-              <h3 align='center' class='alert mt-3' role='alert' style='background: black; color: white;'>Não há registro cadastrado no sistema!
+  ?>
+            <div class="col-md-12" style='top: 85px;'>
+              <h3 align='center' class='alert mt-3' role='alert' style='background: black; color: white;'>Não há registros cadastrados no sistema!
               <a href='index.php' style='color: red;'>Voltar a Página Inicial</a>
               </h3>
               <fieldset class="fieldset-border col-md-2 controle_dados">
                 <legend class="legend-border">Controles</legend>
                   <button type="button" id="btn-backup" name="inserir_img" class="btn mt-2 mb-2" onclick="window.location.href = './inserir_imagem.php';"><img src='img/upload_img.png' class="mr-1">Inserir imagens</button>
+                  <button type="button" id="btn-backup" name="inserir_img" class="btn mt-2 mb-2" onclick="window.location.href = './inserir_postagens.php';"><img src='img/upload_img.png' class="mr-1">Inserir postagens</button>
                   <button type="button" id="btn-backup" class="btn mt-2 mb-2" onclick="window.location.href = './gerenciar_imagens.php';"><img src='img/edit_img.png'>Gerenciar imagens</button>
+                  <button type="button" id="btn-backup" class="btn mt-2 mb-2" onclick="window.location.href = './gerenciar_postagens.php';"><img src='img/edit_img.png'>Gerenciar postagens</button>
                   <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './restore.php';"><img src='img/backup_restore.png' class="mr-1">Restaurar Backup</button>
                 </fieldset>
               </div>
@@ -81,14 +83,17 @@ $array = $cliDAO->buscarCliente();
     }
    ?>
    <div class="container col-md-10" style="top: 100px;">
-   <fieldset class="fieldset-border">
+     <p style="float: right; color: red; font-weight: bold;"> PHP version: <?php echo phpversion();?></p>
+   <fieldset class="fieldset-border" style="width: 75%;">
      <legend class="legend-border">Controles</legend>
        <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="window.location.href = 'sair.php';"><img src='img/exit.png' class="mr-1">sair</button>
        <button type="button" id="btn-limpar" class="btn mt-2 mb-2" onclick="return verificarExclusaoDeRegistros()"><img src='img/trash-all.png' class="mr-1">Excluir Registros</button>
        <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './backup.php';"><img src='img/backup.png' class="mr-1">Realizar Backup</button>
        <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './restore.php';"><img src='img/backup_restore.png' class="mr-1">Restaurar Backup</button>
        <button type="button" id="btn-backup" name="inserir_img" class="btn mt-2 mb-2" onclick="window.location.href = './inserir_imagem.php';"><img src='img/upload_img.png' class="mr-1">Inserir imagens</button>
+       <button type="button" id="btn-backup" name="inserir_img" class="btn mt-2 mb-2" onclick="window.location.href = './inserir_postagens.php';"><img src='img/upload_img.png' class="mr-1">Inserir postagens</button>
        <button type="button" id="btn-backup" class="btn mt-2 mb-2" onclick="window.location.href = './gerenciar_imagens.php';"><img src='img/edit_img.png' class="mr-1">Gerenciar imagens</button>
+       <button type="button" id="btn-backup" class="btn mt-2 mb-2" onclick="window.location.href = './gerenciar_postagens.php';"><img src='img/edit_img.png'>Gerenciar postagens</button>
        <button type="button" id="btn-backup" name="atualizar" class="btn mt-2 mb-2" onclick="window.location.href = './dados.php';"><img src='img/atualizar.svg' class="mr-1">Atualizar</button>
      </fieldset>
      <form name="filtrar-dados" method="post" style="float: left">
@@ -115,14 +120,12 @@ $array = $cliDAO->buscarCliente();
        $search = $_POST['txtfiltro'];
        $filtro = $_POST['filtro'];
 
-       $cliDAO = new ClienteDAO();
-
        $array = $cliDAO->filtrar($filtro, $search);
 
       //nova verificação depois da versão do PHP 7.2
        $verifica = (is_array($array) ? count($array) : 0);
         if ($verifica == 0) {
-                echo "<h4 style='margin-top: 100px;'><strong>Sua pesquisa não retornou nenhum Registro!</strong></h4>";
+                echo "<h4 id='pesq'><strong>Sua pesquisa não retornou nenhum Registro!</strong></h4>";
           return;
     }
    }
@@ -147,78 +150,44 @@ $array = $cliDAO->buscarCliente();
 
           foreach($array as $cli){
 
-            ?>
+            $dados = $cliDAO->buscarArquivo($cli->id);
 
-            <?php
+             foreach($dados as $row){
 
+                $caminho = "arquivos/";
             echo "<tr>
             <ul>
-              <td align='center'><li class='m-2'><a href='download.php?id=$cli->id' class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo'></a></li>
-              <li class='m-2'><a href='alterar_arquivo.php?id=$cli->id' class='btn btn-light border border-light text-dark btn-deletar'><img src='img/edite.png' title='Editar'></a></li>
-              <li class='m-2'><a href='excluir.php?id=$cli->id' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></li></td>
+              <td align='center'><li class='m-2' id='tab-line'><a href='arquivos/$row[arq]' download class='btn border border-light text-dark' style='background: silver'><img src='img/download.png' title='Baixar Arquivo'></a></li>
+              <li class='m-2' id='tab-line'><a href='alterar_arquivo.php?id=".$cli->id."&arq=".$row['arq']."' class='btn btn-light border border-light text-dark btn-deletar'><img src='img/edite.png' title='Editar'></a></li>
+              <li class='m-2' id='tab-line'><a href='excluir.php?id=$cli->id' class='btn btn-danger border border-light text-dark btn-deletar' onclick='return verificarExclusaoPeloCPF()' title='Excluir Registro'><img src='img/trash.svg'></a></li></td>
               ";
               echo "<td>$cli->nome</td>";
               echo "<td>$cli->email</td>";
               echo "<td>$cli->cpf</td>";
-              echo "<td><img src='img/document.svg'></td>";
+              if(is_dir($caminho)){
+                if(file_exists($caminho.$row['arq'])){
+
+                    echo "<td><a class='text-danger' style='text-style: bold; font-weight: bold;' href='arquivos/$row[arq]' download title='Baixar Arquivo'>$row[arq]</a></td>";
+              }else{
+                 echo "<td class='text-danger'>Arquivo indisponível,<br>Arquivo não existe na pasta <strong class='text-light'>/arquivos.</strong></td>";
+              }
+            }else{
+              echo "<td class='text-danger'>diretório <strong class='text-light'>$caminho</strong> não existe.</td>";
+            }
+
               echo "<td>$cli->descricao</td>";
               echo "<td>$cli->data</td>";
               echo "</ul>";
             echo "</tr>";
          }
         }
+       }
        ?>
-   </tbody>
-  </table>
+     </tbody>
+    </table>
+   <br>
   </div>
  </div>
-
- <script type="text/javascript">
-
-$(document).ready(function(){
-
-  $("#baixar").click();
-
-});
-// $(document).ready(function() {
- $.ajax({
- type: 'POST',
-     url: 'dados.php',
-     data: {tabela:tabela},
-     success: function(res) {
-             $('#tabela').html(res).delay(2000);
-     }
-    // });
-  });
-
-    function verificarExclusaoPeloCPF(cpf){
-
-        var decisao = confirm('Desejá Excluir o Registro ?');
-
-          if(decisao == true){
-                alert('Registro excluido com sucesso!');
-                window.location.href = "excluir.php?cpf=" + cpf;
-                return true;
-
-              }else{
-                return false;
-              }
-    }
-
-   function verificarExclusaoDeRegistros(){
-
-      var decisao1 = confirm('Desejá Excluir todos os Registros ?');
-
-     if(decisao1 == true){
-         alert('Registros excluidos com sucesso!');
-         window.location.href = "excluir_registros.php";
-         return true;
-
-      }else{
-         return false;
-      }
-   }
-</script>
 
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/jquery.slim.min.js"></script>

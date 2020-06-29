@@ -1,6 +1,9 @@
 <?php
  include_once 'dao/clienteDAO.class.php';
+ include_once 'model/cliente.class.php';
  $cliDAO = new clienteDAO();
+ $cli = new Cliente();
+ $cliDAO->verificarTabela("cliente","clientes");
  $cliDAO->cadastrarAdministradores();
  ?>
 <!DOCTYPE html>
@@ -16,10 +19,11 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="./animate.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="css/aos.css">
   <title>Rota</title>
 </head>
 
-<body class="animated fadeIn">
+<body>
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
@@ -34,10 +38,10 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php">Sobre</a>
+          <a class="nav-link" href="index.php?#cont1">Sobre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          <a class="nav-link" href="sair.php">Area do CLiente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contato.php">Contato</a>
@@ -46,7 +50,7 @@
     </div>
   </nav>
 
-  <div id="login" class="container texto cadastro">
+  <div id="login" class="container texto cadastro" data-aos="fade-down">
     <div class="card-body">
       <div class="card-title">
         <div align="center">
@@ -59,12 +63,12 @@
      <form name="dadosLogin" method="POST" onsubmit="validarLogin()">
        <div class="form-group col-md-8">
            <label>CPF:</label>
-           <input id="cpf" type="text" class="form-control mb-1" name="cpf" autocomplete="off" placeholder="Informe o CPF" />
+           <input id="cpf" type="text" class="form-control mb-1" name="cpf" autocomplete="off" placeholder="Informe o CPF" style="color: red;"/>
           </div>
           <div class="form-group col-md-8">
           <label>Senha:</label>
            <div class="input-group">
-            <input type="password" class="form-control mb-2" name="senha" maxlength="8" autocomplete="off" placeholder="Informe a Senha" id="password"/>
+            <input type="password" class="form-control mb-2" name="senha" maxlength="8" autocomplete="off" placeholder="Informe a Senha" id="password" style="color: red;"/>
                     <div class="input-group-btn ml-1">
                     <button class="btn rounded border-dark" type="button" id="showPassword" value="mostrar"><img src="img/hide.png" id="image_btn"></button>
               </div>
@@ -83,8 +87,6 @@
        		$senha = addslashes($_POST['senha']);
 
        		if(!empty($cpf) && !empty($senha)){
-
-       			$cliDAO->conectar("rota", "localhost", "root", "");
 
       				if($cliDAO->logar($cpf,$senha)){
 
@@ -138,6 +140,8 @@
   <script src="js/jquery.mask.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/main.js"></script>
 
   <script type="text/javascript">
   $(document).ready(function(){

@@ -22,7 +22,7 @@ $cliDAO = new clienteDAO();
 
 <body>
   <!-- Navigation -->
-<!--   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
     <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <img src="img/menu.svg">
@@ -35,20 +35,21 @@ $cliDAO = new clienteDAO();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php">Sobre</a>
+          <a class="nav-link" href="index.php?#cont1">Sobre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          <a class="nav-link" href="sair.php">Area do CLiente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contato.php">Contato</a>
         </li>
       </ul>
     </div>
-  </nav> -->
+  </nav>
+
   <div id="cadastre_se" class="container texto cadastro m-20 col-md-4" style="padding-bottom: auto;">
     <div class="card-body">
-        <a href="area_cliente.php" id="arrow-left" title="voltar"><img src="img/arrow-left.png"></a>
+        <a href="dados.php" id="arrow-left" title="voltar"><img src="img/arrow-left.png"></a>
       <div class="card-title">
         <div align="center">
         <img src="img/logo-rota.png">
@@ -58,11 +59,11 @@ $cliDAO = new clienteDAO();
           <hr>
         </div>
      <form method="post" name="recBackup" action="./processa.php" enctype="multipart/form-data">
-        <div class="form-group col-md-8 recBackup">       
+        <div class="form-group col-md-8 recBackup">
         <div id="controles">
         <h6><strong><u>Função:</u></strong></h6>
-        <li style="color: red;">OBS: este recurso apagará as tabelas do Banco de Dados, para poder subir/enviar um novo Backup.</li>
-        <input type="submit" id="btn-limpar" class="btn float-top" name="deletar_tabela" value="resetar tabelas" onclick="verificaCampos()">       
+        <li style="color: red;">OBS: este recurso forçara a exclusão das tabelas do Banco de Dados, para poder subir/enviar um novo Backup.</li>
+        <input type="submit" id="btn-limpar" class="btn float-top" name="deletar_tabela" value="resetar tabelas" onclick="verificaCampos()">
       </div>
        <label>Servidor:</label>
        <input type="text" class="form-control mb-2" name="servidor" autocomplete="off" placeholder="Insira o caminho do servidor" required>
@@ -71,21 +72,22 @@ $cliDAO = new clienteDAO();
        <label>Senha:</label>
        <input type="password" class="form-control mb-2" name="senha_server" autocomplete="off" placeholder="Insira senha (se necessário)">
        <label>Base de Dados:</label>
-       <input type="text" class="form-control mb-2"  name="db_name" value="rota" autocomplete="off" required readonly>
+       <input type="text" class="form-control mb-2"  name="db_name" value="" autocomplete="off" placeholder="Insira o nome do BD" required>
        <label>selecione o arquivo do Backup:</label>
        <input type="file" class="mb-2 arquivo" name="arquivo" accept=".sql" required>
        <button id="btn-enviar" type="submit" name="importar" class="btn button-form importar">importar</button>
      </div>
-     <?php       
+     <?php
 
    if(isset($_SESSION['msg'])){
-            
+
            ?>
           <div class="alert alert-success alert-dismissible mt-2" role="alert">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong><?php echo $_SESSION['msg'];?></strong>
            </div>
      </form>
                 <?php
+
             unset($_SESSION['msg']);
 
         }else if(isset($_SESSION['msgE'])){
@@ -96,11 +98,11 @@ $cliDAO = new clienteDAO();
            </div>
              <?php
              unset($_SESSION['msgE']);
-        
+
         }else if(isset($_SESSION['del_t'])){
 
             ?>
- <div class="alert alert-success alert-dismissible mt-2" role="alert">
+ <div class="alert alert-warning alert-dismissible mt-2" role="alert">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong><?php echo $_SESSION['del_t'];?></strong>
            </div>
             <?php
@@ -122,15 +124,15 @@ $cliDAO = new clienteDAO();
         var arquivo = recBackup.arquivo.hasAttribute('required');
 
         if(servidor && arquivo === true){
-            window.location.href = './del_tabelas.php';          
+            window.location.href = './del_tabelas.php';
         }
 
         return true;
 
-      }else{
+      }else if(decisao == false){
 
         return false;
-          
+
        }
       }
 

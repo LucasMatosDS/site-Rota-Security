@@ -50,19 +50,17 @@ class BackupDatabase
     {
         // Se as informações de conexão com o banco de dados não foram definidas
         if (empty($this->database) or empty($this->username) or empty($this->host)) {
-            throw new \Exception('As informações de conexão com o banco de dados não foram definidas');
-        }
+     
+
+         }
 
         // Gerando nome único para o arquivo
         date_default_timezone_set('America/Sao_Paulo');
         // $fileName = 'ROTA-BACKUP-'. date('d-m-y H:i:s').'.sql.zip';
-        $fileName = 'ROTA-BACKUP'.date('d-m-y H:i:s').'.sql';
+        $fileName = 'ROTA-BACKUP-'.date('d-m-y H:i:s').'.sql';
         $filePath = $this->backupFolder . '/' . $fileName;
 for($i = 0; $i <= 10; $i++){
-        // Definindo informações para geração do backup
-        // $dump = new Mysqldump("mysql:host={$this->host};dbname={$this->database}", $this->username, $this->password, array(
-        //     'compress' => Mysqldump::GZIP,
-        // ));
+
         $dump = new Mysqldump("mysql:host={$this->host};dbname={$this->database}", $this->username, $this->password);
 
     }

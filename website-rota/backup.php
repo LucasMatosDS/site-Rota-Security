@@ -1,5 +1,11 @@
 <?php
+session_start();
 
+ if(!isset($_SESSION['id'])){
+      header('location: area_cliente.php');
+      exit;
+ }
+ 
 // Incluindo o autoload do Composer para carregar a biblioteca
 require_once 'vendor/autoload.php';
 

@@ -7,6 +7,7 @@ include_once  'model/cliente.class.php';
 include_once 'excluir.php';
 
 $cliDAO = new ClienteDAO();
+$cliDAO->verificarTabela("cliente","clientes");
 $array = $cliDAO->buscarCliente();
 
    if(!isset($_SESSION['id'])){
@@ -103,15 +104,15 @@ $array = $cliDAO->buscarCliente();
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Home
+          <a class="nav-link" href="index.php">Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Sobre</a>
+          <a class="nav-link" href="index.php?#cont1">Sobre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          <a class="nav-link" href="sair.php">Area do CLiente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contato.php">Contato</a>
@@ -139,7 +140,7 @@ $array = $cliDAO->buscarCliente();
        </div>
       </div>
      </div>
- 
+
   <script src="js/jquery.mask.min.js"></script>
   <script src="js/jquery.slim.min.js"></script>
   <script src="js/validacao.js"></script>

@@ -6,7 +6,10 @@ include_once  'dao/clienteDAO.class.php';
 include_once  'model/imagem.class.php';
 
 $cliDAO = new ClienteDAO();
+//$cliDAO->verificarImagem("imagens");
+$dados_postagem = $cliDAO->buscarPostagem();
 $dados = $cliDAO->buscarImagem();
+
 
 ?>
 <!DOCTYPE html>
@@ -26,7 +29,7 @@ $dados = $cliDAO->buscarImagem();
   <title>Rota</title>
 </head>
 
-<body data-aos="fade-down">
+<body>
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
@@ -44,7 +47,7 @@ $dados = $cliDAO->buscarImagem();
           <a class="nav-link" href="#cont1">Sobre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          <a class="nav-link" href="sair.php">Area do CLiente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contato.php">Contato</a>
@@ -63,22 +66,16 @@ $dados = $cliDAO->buscarImagem();
 
         <div id="banner1" class="carousel-item active img-fluid">
           <div class="carousel-caption d-none d-md-block">
-            <h3 class="display-4">subtitulo</h3>
-            <p class="lead">texto</p>
           </div>
         </div>
 
         <div id="banner2" class="carousel-item img-fluid">
           <div class="carousel-caption d-none d-md-block">
-            <h3 class="display-4">subtitulo</h3>
-            <p class="lead">texto</p>
           </div>
         </div>
 
         <div id="banner3" class="carousel-item img-fluid">
           <div class="carousel-caption d-none d-md-block">
-            <h3 class="display-4">subtitulo</h3>
-            <p class="lead">texto</p>
           </div>
         </div>
       </div>
@@ -92,23 +89,36 @@ $dados = $cliDAO->buscarImagem();
       </a>
     </div>
   </header>
+<?php
 
-  <div class="container mt-4 mb-4 texto">
-    <div class="card-body">
+if(empty($dados_postagem)){
+
+  ?>
+   <div align="center" class="container mt-4 mb-4 p-4 texto">
+         <strong style="font-size: 20px; color: red;">Ainda não há postagens inseridas!</strong>
+     </div>
+  <?php
+
+}else{
+
+foreach($dados_postagem as $conteudo){
+
+      ?>
+
+   <div class="container mt-4 mb-4 texto">
+    <div class="card-body" data-aos="fade-down">
       <div class="card-title">
-        <h3 class="subtitulo">dsds</h3>
+        <h3 class="subtitulo"><?php echo $conteudo['titulo_postagem'];?></h3>
         </div>
         <hr>
-      <p class="conteudo">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p class="conteudo" style="display: block;"><?php echo $conteudo['conteudo'];?></p>
+      <hr>
     </div>
-  </div>
+   </div>
+    <?php
+  }
+ }
+?>
 
   <hr id="linha-doc">
   <div id="cont1" class="container mt-4 mb-4 texto">
@@ -120,7 +130,6 @@ $dados = $cliDAO->buscarImagem();
            <?php
 
           if(empty($dados)){
-
            ?>
 
            <div align="center">
@@ -128,12 +137,14 @@ $dados = $cliDAO->buscarImagem();
            </div>
 
            <?php
+
          }else{
+
                foreach($dados as $imagem){
 
                    ?>
 
-                  <img src="imagens/<?php echo $imagem['foto'];?>" data-aos="fade-up" data-aos-duration="900" id="imagens" class="img-thumbnail border rounded zoom" title="visualizar imagem" alt="Imagem Indisponível" onclick="window.location.href = 'imagens/<?php echo $imagem['foto'];?>'">
+                  <img src="imagens/<?php echo $imagem['foto'];?>" data-aos="fade-down" data-aos-duration="900" id="imagens" class="img-thumbnail border rounded zoom" title="visualizar imagem" alt="Imagem Indisponível" onclick="window.location.href = 'imagens/<?php echo $imagem['foto'];?>'">
 
                    <?php
              }

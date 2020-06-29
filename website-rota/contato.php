@@ -11,10 +11,11 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="./animate.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="css/aos.css">
   <title>Rota</title>
 </head>
 
-<body class="animated fadeIn">
+<body>
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
@@ -32,7 +33,7 @@
           <a class="nav-link" href="index.php">Sobre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          <a class="nav-link" href="sair.php">Area do CLiente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contato.php">Contato</a>
@@ -41,7 +42,7 @@
     </div>
   </nav>
 
-  <div class="container cadastro mb-2">
+  <div class="container cadastro mb-2" data-aos="fade-down">
     <div class="card-body">
       <div align="center">
       <img src="img/logo-rota.png">
@@ -90,6 +91,8 @@
   <script src="js/jquery.mask.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/main.js"></script>
 
   <script type="text/javascript">
   $(document).ready(function(){

@@ -1,6 +1,10 @@
 <?php
 session_start();
 ob_start();
+
+include_once 'dao/clienteDAO.class.php';
+$cliDAO = new ClienteDAO();
+$cliDAO->cadastrarIdImagem();
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +25,7 @@ ob_start();
 
 <body>
   <!-- Navigation -->
-<!--   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
     <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <img src="img/menu.svg">
@@ -34,17 +38,17 @@ ob_start();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php">Sobre</a>
+          <a class="nav-link" href="index.php?#cont1">Sobre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          <a class="nav-link" href="sair.php">Area do CLiente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contato.php">Contato</a>
         </li>
       </ul>
     </div>
-  </nav> -->
+  </nav>
 
   <div id="cadastre_se" class="container texto cadastro">
     <div class="card-body">
@@ -67,14 +71,6 @@ ob_start();
    Cancelar</button>
       </div>
      </form>
-     <?php
-
-  if(isset($_SESSION['msg'])){
-     echo $_SESSION['msg'];
-      unset($_SESSION['msg']);
-
-  }
- ?>
 
  <?php
 
@@ -87,8 +83,8 @@ ob_start();
           $fotos = array();
 
         if(isset($_FILES['foto'])){
-              //salvando dentro da pasta imgagens.
-             $img->imagem = $_FILES['foto']['name'];
+              //salvando dentro da pasta imagens.
+             $img->imagem = md5(uniqid($_FILES['foto']['name']));
                 move_uploaded_file($_FILES['foto']['tmp_name'], 'imagens/'.$img->imagem);
 
                  if(!empty($_FILES['foto']['name'])){
@@ -128,21 +124,5 @@ ob_start();
   <script src="js/jquery.mask.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
-
-<!-- <script type="text/javascript">
-  function baixarMidia(){
-    var img =  confirm('voce desejá fazer o donwload do arquivo ?');
-
-     if(img == true){
-     $('a#download').attr({target: '_blank',
-                    href  : 'img/<?php echo $arq->nome_arq['foto_capa'];?>'});
-
-
-     }else if(img != true){
-
-     }
-  }
-  </script> -->
-
 </body>
 </html>

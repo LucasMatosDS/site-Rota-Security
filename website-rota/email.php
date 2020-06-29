@@ -4,6 +4,13 @@
 
 <?php
 
+session_start();
+
+if(!isset($_SESSION['id'])){
+    header('location: area_cliente.php');
+    exit;
+}
+
 if(isset($_POST['email']) && !empty($_POST['email'])){
 
 $nome = $_POST['nome'];
@@ -33,7 +40,7 @@ if(mail($to,$subject,$body,$header)){
     echo "<script>alert('email enviado com sucesso! Obrigado Por nos contatar.');</script>";
 
 }else{
-    echo "<script>alert('Erro ao enviar email! Por favor tente mais tarde.');</script>";
+    echo "<script>alert('Ops problemas ao enviar email! Por favor tente mais tarde.');</script>";
 
   }
  }

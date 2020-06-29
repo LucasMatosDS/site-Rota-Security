@@ -1,18 +1,6 @@
 <?php
 session_start();
 ob_start();
-
- if(isset($_GET['id'])){
-
-      include_once 'model/cliente.class.php';
-      include_once 'dao/clienteDAO.class.php';
-
-      $cliDAO = new ClienteDAO();
-
-          $array = $cliDAO->filtrar('id', $_GET['id']);
-
-          $cli = $array[0];
- }
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -32,7 +20,7 @@ ob_start();
 
 <body class="animated fadeIn">
   <!-- Navigation -->
-<!--   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#"><img src="img/logo-rota.png" title="Rota-Security" class="animated pulse zoom" alt="Logo indisponível"></a>
     <button class="navbar-toggler rounded border-0" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <img src="img/menu.svg">
@@ -40,22 +28,22 @@ ob_start();
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Home
+          <a class="nav-link" href="index.php">Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Sobre</a>
+          <a class="nav-link" href="index.php?#cont1">Sobre</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="area_cliente.php">Area do CLiente</a>
+          <a class="nav-link" href="sair.php">Area do CLiente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="contato.php">Contato</a>
         </li>
       </ul>
     </div>
-  </nav> -->
+  </nav>
 
   <div id="cadastre_se" class="container texto cadastro">
     <div class="card-body">
@@ -98,13 +86,20 @@ ob_start();
 
           include_once 'model/cliente.class.php';
           include_once 'dao/clienteDAO.class.php';
+          $cli = new Cliente();
 
-          $cli->id = $_GET['id'];
           $cli->descricao = addslashes($_POST['descricao']);
 
           $fotos = array();
 
         if(isset($_FILES['arq'])){
+
+          $caminho = "arquivos/";
+          $id_arq = trim($_GET['id']);
+          $arquivo = trim($_GET['arq']);
+
+          if(file_exists($caminho.$arquivo)){
+             //unlink($caminho.$arquivo);
               //salvando dentro da pasta img.
                  $cli->nome_arq = $_FILES['arq']['name'];
                     move_uploaded_file($_FILES['arq']['tmp_name'], 'arquivos/'.$cli->nome_arq);
@@ -119,15 +114,46 @@ ob_start();
                 </div>
 
                     <?php
+                 }else{
+                   ?>
+                   <div class="alert alert-danger alert-dismissible" role="alert">
+                       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                       <strong>Erro ao alterar arquivo!</strong>
+                   </div>
+                   <?php
                  }
 
+              }else{
+
+                $cli->nome_arq = $_FILES['arq']['name'];
+                   move_uploaded_file($_FILES['arq']['tmp_name'], 'arquivos/'.$cli->nome_arq);
+
+                    if(!empty($_FILES['arq']['name'])){
+
+              }else{
+
+                   ?>
+                   <div class="alert alert-danger alert-dismissible" role="alert">
+                       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                       <strong>Erro ao alterar arquivo!</strong>
+                   </div>
+                   <?php
+              }
+
+               ?>
+               <div class="alert alert-success alert-dismissible" role="alert">
+                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                   <strong>Dados alterados com sucesso!</strong>
+               </div>
+               <?php
+              }
                 //salvar nomes para enviar para o banco.
 
                 //inserindo dentro da variavel fotos o nome da imagem.
                 array_push($fotos, $cli->nome_arq);
 
             $cliDAO = new ClienteDAO();
-            $cliDAO->alterar($cli);
+            $cliDAO->alterar($cli,$id_arq);
 
              $cli->__destruct();
   }
@@ -142,19 +168,5 @@ ob_start();
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
 
-<script type="text/javascript">
-  function baixarMidia(){
-    var img =  confirm('voce desejá fazer o donwload do arquivo ?');
-
-     if(img == true){
-     $('a#download').attr({target: '_blank',
-                    href  : 'img/<?php echo $arq->nome_arq['foto_capa'];?>'});
-
-
-     }else if(img != true){
-
-     }
-  }
-  </script>
 </body>
 </html>
