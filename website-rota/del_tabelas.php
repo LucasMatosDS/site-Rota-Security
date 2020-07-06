@@ -1,10 +1,5 @@
 <?php
 session_start();
-
- if(!isset($_SESSION['id'])){
-      header('location: area_cliente.php');
-      exit;
- }
  
 include_once 'dao/clienteDAO.class.php';
 $cliDAO = new ClienteDAO();

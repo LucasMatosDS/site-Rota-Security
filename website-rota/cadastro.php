@@ -1,6 +1,10 @@
 <?php
 session_start();
 ob_start();
+
+include_once "dao/clienteDAO.class.php";
+
+$cliDAO = new ClienteDAO();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

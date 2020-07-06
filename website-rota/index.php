@@ -6,11 +6,8 @@ include_once  'dao/clienteDAO.class.php';
 include_once  'model/imagem.class.php';
 
 $cliDAO = new ClienteDAO();
-//$cliDAO->verificarImagem("imagens");
 $dados_postagem = $cliDAO->buscarPostagem();
 $dados = $cliDAO->buscarImagem();
-
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

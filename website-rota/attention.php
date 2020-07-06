@@ -16,11 +16,8 @@
     <div class='col-md-12'>
         <h2 id="titulo-base">Nenhuma Base de Dados foi selecionada!</h2>
         <img src="img/database.png">
-        <a href='index.php' style='font-size: 16px;'>Voltar a Página Inicial</a>
       <fieldset class="fieldset-border col-md-2 controle_dados">
         <legend class="legend-border">Controles</legend>
-          <button type="button" id="btn-backup" name="inserir_img" class="btn mt-2 mb-2" onclick="window.location.href = './inserir_imagem.php';"><img src='img/upload_img.png' class="mr-1">Inserir imagens</button>
-          <button type="button" id="btn-backup" class="btn mt-2 mb-2" onclick="window.location.href = './gerenciar_imagens.php';"><img src='img/edit_img.png'>Gerenciar imagens</button>
           <button type="button" id="btn-backup" name="backup" class="btn mt-2 mb-2" onclick="window.location.href = './restore.php';"><img src='img/backup_restore.png' class="mr-1">Restaurar Backup</button>
         </fieldset>
       </div>

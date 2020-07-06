@@ -61,7 +61,7 @@ td{
 }
 
 .carousel-inner {
-  .transition(.2s ease-in-out left);
+  transition-duration: 0.2s;
 }
 
 .carousel-control-prev-icon{
@@ -120,8 +120,8 @@ td{
 #contato{
   text-align: right;
   margin-right: 20px;
-  text-decoration: underline;
   font-family: 'Oswald', sans-serif;
+  color: white;
 }
 
 #titulo-login{

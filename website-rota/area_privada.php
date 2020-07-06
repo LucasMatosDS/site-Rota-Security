@@ -7,7 +7,6 @@ include_once  'model/cliente.class.php';
 include_once 'excluir.php';
 
 $cliDAO = new ClienteDAO();
-$cliDAO->verificarTabela("cliente","clientes");
 $array = $cliDAO->buscarCliente();
 
    if(!isset($_SESSION['id'])){

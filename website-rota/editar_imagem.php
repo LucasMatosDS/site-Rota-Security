@@ -2,12 +2,9 @@
 session_start();
 ob_start();
 
- if(isset($_GET['id'])){
+include_once "dao/clienteDAO.class.php";
 
-      include_once 'model/imagem.class.php';
-      include_once 'dao/clienteDAO.class.php';
- }
-
+$cliDAO = new ClienteDAO();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

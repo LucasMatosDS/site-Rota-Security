@@ -3,7 +3,6 @@
  include_once 'model/cliente.class.php';
  $cliDAO = new clienteDAO();
  $cli = new Cliente();
- $cliDAO->verificarTabela("cliente","clientes");
  $cliDAO->cadastrarAdministradores();
  ?>
 <!DOCTYPE html>

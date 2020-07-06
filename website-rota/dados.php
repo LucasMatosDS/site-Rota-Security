@@ -7,13 +7,10 @@ include_once  'model/cliente.class.php';
 include_once  'model/imagem.class.php';
 
 $cliDAO = new ClienteDAO();
+$cliDAO->verificarTabela("cliente","clientes");
 $cli = new Cliente();
 $array = $cliDAO->buscarCliente();
 
-if(empty($array)){
-   header("location: area_cliente.php");
-   exit;
-}
 ?>
 
 <!DOCTYPE html>
